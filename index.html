@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="application-version" content="0.14.0" />
+  <meta name="application-version" content="0.19.0" />
   <title>Fedriko Shops — Дизайн и моды для Minecraft</title>
 
   <!-- VK ID SDK -->
@@ -17,8 +17,8 @@
       --bg-elevated: #121216;
       --card-bg-start: rgba(25, 25, 30, 0.7);
       --card-bg-end: rgba(14, 14, 18, 0.9);
-      --header-bg: rgba(10, 10, 12, 0.85);
-      --modal-bg-start: rgba(25, 25, 30, 0.96);
+      --header-bg: rgba(10, 10, 12, 0.92);
+      --modal-bg-start: rgba(25, 25, 30, 0.97);
       --modal-bg-end: rgba(14, 14, 18, 0.99);
       --input-bg: rgba(10, 10, 12, 0.9);
 
@@ -48,7 +48,7 @@
       --bg-elevated: #ffffff;
       --card-bg-start: rgba(255, 255, 255, 0.9);
       --card-bg-end: rgba(242, 245, 252, 0.95);
-      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-bg: rgba(255, 255, 255, 0.95);
       --modal-bg-start: rgba(255, 255, 255, 0.98);
       --modal-bg-end: rgba(245, 248, 255, 0.99);
       --input-bg: rgba(245, 247, 252, 0.95);
@@ -100,6 +100,7 @@
 
     a { text-decoration: none; color: inherit; }
 
+    /* Шапка сайта */
     .site-header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -119,15 +120,17 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
+      gap: 12px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-weight: 700;
       font-size: 1.25rem;
       letter-spacing: -0.02em;
+      flex-shrink: 0;
     }
 
     .brand-avatar {
@@ -141,29 +144,30 @@
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       font-size: 0.95rem;
       font-weight: 500;
       color: var(--text-secondary);
       align-items: center;
     }
 
-    .nav-links a:hover {
-      color: var(--text-primary);
-    }
+    .nav-links a:hover { color: var(--text-primary); }
 
+    /* Панель действий в шапке с плавной горизонтальной прокруткой для телефона */
     .header-actions {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
 
     .btn {
       background: var(--accent);
       color: #fff;
-      padding: 10px 22px;
+      padding: 9px 20px;
       border-radius: 99px;
       font-weight: 600;
+      font-size: 0.9rem;
       transition: all 0.25s var(--ease-out);
       cursor: pointer;
       border: none;
@@ -200,7 +204,7 @@
       transform: translateY(-2px);
     }
 
-    /* Подсвечивающаяся пульсирующая кнопка Админ Панели в шапке */
+    /* Подсвечивающаяся кнопка Админ Панели */
     .btn-admin-header {
       display: none;
       background: rgba(230, 46, 45, 0.15);
@@ -218,9 +222,7 @@
       transition: all 0.25s var(--ease-out);
     }
 
-    .btn-admin-header.active {
-      display: inline-flex;
-    }
+    .btn-admin-header.active { display: inline-flex; }
 
     @keyframes headerPulse {
       0%, 100% {
@@ -234,6 +236,42 @@
       }
     }
 
+    /* Кнопка «Чаты» в шапке для покупателей */
+    .btn-chats-header {
+      background: rgba(42, 171, 238, 0.12);
+      border: 1px solid rgba(42, 171, 238, 0.35);
+      color: #2AABEE;
+      padding: 7px 14px;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+    }
+
+    .btn-chats-header:hover {
+      background: rgba(42, 171, 238, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .chat-unread-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      display: none;
+    }
+
+    .chat-unread-dot.active { display: block; }
+
     /* Блок аккаунта — ТОЛЬКО иконка и выход */
     .user-profile-widget {
       display: none;
@@ -241,13 +279,11 @@
       gap: 6px;
       background: var(--border-subtle);
       border: 1px solid var(--border-highlight);
-      padding: 4px 8px 4px 4px;
+      padding: 3px 8px 3px 3px;
       border-radius: 99px;
     }
 
-    .user-profile-widget.active {
-      display: inline-flex;
-    }
+    .user-profile-widget.active { display: inline-flex; }
 
     .user-profile-avatar {
       width: 32px;
@@ -261,7 +297,6 @@
       justify-content: center;
       font-weight: bold;
       font-size: 0.85rem;
-      cursor: default;
       overflow: hidden;
     }
 
@@ -277,10 +312,7 @@
       padding: 2px 4px;
       transition: color 0.2s;
     }
-
-    .user-logout-btn:hover {
-      color: var(--accent-bright);
-    }
+    .user-logout-btn:hover { color: var(--accent-bright); }
 
     .btn-settings {
       width: 38px;
@@ -346,6 +378,7 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
+    /* Hero */
     .hero {
       padding-top: calc(var(--header-h) + 40px);
       padding-bottom: 70px;
@@ -521,9 +554,7 @@
       transition: transform 0.4s ease;
     }
 
-    .product-card:hover .card-thumb img {
-      transform: scale(1.05);
-    }
+    .product-card:hover .card-thumb img { transform: scale(1.05); }
 
     .card-tag {
       font-family: monospace;
@@ -556,17 +587,8 @@
       50% { transform: translateY(-7px); box-shadow: 0 0 20px rgba(255, 77, 76, 0.6); }
     }
 
-    .product-card h3 {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-
-    .product-card p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      margin-bottom: 24px;
-    }
+    .product-card h3 { font-size: 1.8rem; margin-bottom: 12px; font-weight: 700; }
+    .product-card p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 24px; }
 
     .price-tag {
       align-self: flex-start;
@@ -578,12 +600,9 @@
       font-size: 1.15rem;
       color: var(--text-primary);
     }
-
     .price-tag span { color: var(--accent-bright); }
 
-    .product-card.clicked {
-      animation: clickWarp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
+    .product-card.clicked { animation: clickWarp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 
     @keyframes clickWarp {
       0% { transform: scale(1) translateY(0); }
@@ -591,6 +610,7 @@
       100% { transform: scale(1) translateY(0); }
     }
 
+    /* Отзывы */
     .reviews-section {
       padding: 70px 0;
       border-top: 1px solid var(--border-subtle);
@@ -656,16 +676,8 @@
       flex-shrink: 0;
     }
 
-    .review-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .review-name {
-      font-weight: 700;
-      font-size: 1rem;
-    }
+    .review-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .review-name { font-weight: 700; font-size: 1rem; }
 
     .review-verified-badge {
       display: inline-block;
@@ -685,24 +697,9 @@
       font-weight: 600;
     }
 
-    .review-stars {
-      color: #FFB800;
-      font-size: 0.85rem;
-      margin-top: 2px;
-    }
-
-    .review-text {
-      color: var(--text-secondary);
-      font-size: 0.92rem;
-      line-height: 1.55;
-      word-break: break-word;
-    }
-
-    .review-date {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      margin-top: 12px;
-    }
+    .review-stars { color: #FFB800; font-size: 0.85rem; margin-top: 2px; }
+    .review-text { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.55; word-break: break-word; }
+    .review-date { color: var(--text-muted); font-size: 0.78rem; margin-top: 12px; }
 
     .review-form-wrap {
       max-width: 600px;
@@ -716,11 +713,7 @@
       padding: 26px;
     }
 
-    .review-form-wrap h3 {
-      font-size: 1.35rem;
-      margin-bottom: 12px;
-      text-align: center;
-    }
+    .review-form-wrap h3 { font-size: 1.35rem; margin-bottom: 12px; text-align: center; }
 
     .review-lock-notice {
       background: rgba(230, 46, 45, 0.1);
@@ -733,20 +726,10 @@
       margin-bottom: 18px;
     }
 
-    .review-lock-notice strong {
-      color: var(--accent-bright);
-      display: block;
-      margin-bottom: 4px;
-    }
+    .review-lock-notice strong { color: var(--accent-bright); display: block; margin-bottom: 4px; }
 
     .form-group { margin-bottom: 15px; }
-
-    .form-group label {
-      display: block;
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
+    .form-group label { display: block; font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 6px; }
 
     .form-input, .form-textarea, .form-select {
       width: 100%;
@@ -761,14 +744,8 @@
       transition: border-color 0.2s;
     }
 
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-      border-color: var(--accent);
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 85px;
-    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); }
+    .form-textarea { resize: vertical; min-height: 85px; }
 
     .star-select {
       display: flex;
@@ -777,7 +754,6 @@
       cursor: pointer;
       color: rgba(125, 125, 125, 0.3);
     }
-
     .star-select span.active { color: #FFB800; }
 
     .user-purchases-block {
@@ -792,12 +768,7 @@
       padding: 24px;
     }
 
-    .purchases-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 14px;
-    }
+    .purchases-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
 
     .purchase-row {
       display: flex;
@@ -811,23 +782,11 @@
       gap: 8px;
     }
 
-    .purchase-info h4 {
-      font-size: 1rem;
-      font-weight: 700;
-    }
+    .purchase-info h4 { font-size: 1rem; font-weight: 700; }
+    .purchase-info p { font-size: 0.8rem; color: var(--text-muted); }
+    .btn-sm { padding: 6px 14px; font-size: 0.82rem; border-radius: 99px; }
 
-    .purchase-info p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .btn-sm {
-      padding: 6px 14px;
-      font-size: 0.82rem;
-      border-radius: 99px;
-    }
-
-    /* Поддержка */
+    /* Служба поддержки */
     .support-section {
       padding: 70px 0;
       border-top: 1px solid var(--border-subtle);
@@ -851,10 +810,7 @@
       margin: 0 auto;
     }
 
-    .support-card:hover {
-      border-color: rgba(42, 171, 238, 0.4);
-      transform: translateY(-4px);
-    }
+    .support-card:hover { border-color: rgba(42, 171, 238, 0.4); transform: translateY(-4px); }
 
     .support-icon-wrap {
       width: 66px;
@@ -869,12 +825,7 @@
       color: #2AABEE;
     }
 
-    .support-card h3 {
-      font-size: 1.85rem;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-
+    .support-card h3 { font-size: 1.85rem; margin-bottom: 12px; font-weight: 700; }
     .support-card p {
       color: var(--text-secondary);
       font-size: 1.05rem;
@@ -896,11 +847,7 @@
       box-shadow: 0 8px 24px rgba(42, 171, 238, 0.3);
       transition: all 0.25s var(--ease-out);
     }
-
-    .btn-telegram:hover {
-      background: #2298D6;
-      transform: translateY(-2px);
-    }
+    .btn-telegram:hover { background: #2298D6; transform: translateY(-2px); }
 
     .about-section {
       padding: 70px 0;
@@ -908,25 +855,9 @@
       background: var(--border-subtle);
     }
 
-    .about-content {
-      max-width: 760px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .about-text {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      margin-bottom: 26px;
-    }
-
-    .about-links {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
+    .about-content { max-width: 760px; margin: 0 auto; text-align: center; }
+    .about-text { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 26px; }
+    .about-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
     .youtube-link {
       display: inline-flex;
@@ -939,11 +870,7 @@
       font-weight: bold;
       transition: background 0.3s, transform 0.3s;
     }
-
-    .youtube-link:hover {
-      background: #cc0000;
-      transform: translateY(-2px);
-    }
+    .youtube-link:hover { background: #cc0000; transform: translateY(-2px); }
 
     .reviews-link {
       display: inline-flex;
@@ -958,11 +885,7 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-
-    .reviews-link:hover {
-      background: rgba(255, 255, 255, 0.16);
-      transform: translateY(-2px);
-    }
+    .reviews-link:hover { background: rgba(255, 255, 255, 0.16); transform: translateY(-2px); }
 
     .site-footer {
       border-top: 1px solid var(--border-subtle);
@@ -971,16 +894,194 @@
       background: var(--header-bg);
     }
 
-    .footer-text {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      letter-spacing: 0.02em;
+    .footer-text { color: var(--text-muted); font-size: 0.92rem; letter-spacing: 0.02em; }
+    .footer-text span { color: var(--text-primary); font-weight: 600; }
+
+    /* ============================================================== */
+    /* ИНТЕРФЕЙС ЧАТОВ И ПОДДЕРЖКИ (КАК НА ПЛЕЕРОКЕ)                  */
+    /* ============================================================== */
+    .chat-modal-content {
+      width: min(780px, calc(100vw - 20px));
+      max-width: 780px;
+      height: 580px;
+      max-height: calc(100vh - 40px);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      overflow: hidden;
+      padding: 0;
     }
 
-    .footer-text span {
-      color: var(--text-primary);
-      font-weight: 600;
+    .chats-sidebar {
+      background: rgba(14, 14, 18, 0.95);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
     }
+
+    .chats-sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .chats-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .chat-item:hover, .chat-item.active { background: rgba(255, 255, 255, 0.05); }
+
+    .chat-item-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .chat-item-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .chat-item-title {
+      font-weight: 600;
+      font-size: 0.92rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-item-preview {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .chat-main-area {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-primary);
+      position: relative;
+    }
+
+    .chat-main-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--header-bg);
+    }
+
+    .chat-main-header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-status-online {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ecc71;
+    }
+
+    .chat-messages-container {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-bubble {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      word-break: break-word;
+      position: relative;
+    }
+
+    .message-bubble.incoming {
+      align-self: flex-start;
+      background: var(--border-subtle);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+    }
+
+    .message-bubble.outgoing {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message-meta {
+      font-size: 0.68rem;
+      opacity: 0.7;
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .chat-input-container {
+      padding: 14px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 10px;
+      background: var(--header-bg);
+    }
+
+    .chat-input-field {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--border-highlight);
+      border-radius: 99px;
+      padding: 10px 18px;
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .chat-send-action-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .chat-send-action-btn:hover { background: var(--accent-bright); transform: scale(1.05); }
 
     /* Модальные окна */
     .modal-overlay {
@@ -1000,11 +1101,7 @@
     }
 
     .modal-overlay[hidden] { display: none !important; }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
 
     .modal-content {
       background: linear-gradient(165deg, var(--modal-bg-start) 0%, var(--modal-bg-end) 100%);
@@ -1024,9 +1121,7 @@
       max-height: 90vh;
     }
 
-    .modal-overlay.active .modal-content {
-      transform: translateY(0) scale(1);
-    }
+    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
 
     .modal-close {
       position: absolute;
@@ -1044,31 +1139,11 @@
       z-index: 10;
       font-size: 1.1rem;
     }
+    .modal-close:hover { background: var(--accent); border-color: var(--accent); transform: rotate(90deg); }
 
-    .modal-close:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      transform: rotate(90deg);
-    }
-
-    .modal-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-bottom: 1px solid var(--border-highlight);
-    }
-
-    .modal-body {
-      padding: 22px 24px;
-      overflow-y: auto;
-    }
-
-    .modal-title {
-      font-size: 1.65rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text-primary);
-    }
+    .modal-image { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid var(--border-highlight); }
+    .modal-body { padding: 22px 24px; overflow-y: auto; }
+    .modal-title { font-size: 1.65rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); }
 
     .modal-price-row {
       display: flex;
@@ -1079,26 +1154,10 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    .modal-price {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
+    .modal-price { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); }
     .modal-price span { color: var(--accent-bright); }
-
-    .modal-buy-btn {
-      padding: 10px 30px;
-      font-size: 1.05rem;
-      box-shadow: 0 5px 15px var(--accent-glow);
-    }
-
-    .modal-desc {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
+    .modal-buy-btn { padding: 10px 30px; font-size: 1.05rem; box-shadow: 0 5px 15px var(--accent-glow); }
+    .modal-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
 
     .modal-tg-hint {
       font-size: 0.85rem;
@@ -1108,18 +1167,9 @@
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
     }
+    .modal-tg-hint a { color: #2AABEE; font-weight: 600; }
 
-    .modal-tg-hint a {
-      color: #2AABEE;
-      font-weight: 600;
-    }
-
-    .pay-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 18px;
-    }
+    .pay-options { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
 
     .pay-btn-item {
       display: flex;
@@ -1134,17 +1184,8 @@
       text-align: left;
       width: 100%;
     }
-
-    .pay-btn-item:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      background: rgba(230, 46, 45, 0.08);
-    }
-
-    .pay-btn-item.pay-tg:hover {
-      border-color: #2AABEE;
-      background: rgba(42, 171, 238, 0.08);
-    }
+    .pay-btn-item:hover { transform: translateY(-2px); border-color: var(--accent); background: rgba(230, 46, 45, 0.08); }
+    .pay-btn-item.pay-tg:hover { border-color: #2AABEE; background: rgba(42, 171, 238, 0.08); }
 
     .pay-icon-box {
       width: 44px;
@@ -1155,30 +1196,11 @@
       justify-content: center;
       flex-shrink: 0;
     }
+    .pay-tg .pay-icon-box { background: rgba(42, 171, 238, 0.15); color: #2AABEE; }
+    .pay-online .pay-icon-box { background: rgba(230, 46, 45, 0.15); color: var(--accent-bright); }
 
-    .pay-tg .pay-icon-box {
-      background: rgba(42, 171, 238, 0.15);
-      color: #2AABEE;
-    }
-
-    .pay-online .pay-icon-box {
-      background: rgba(230, 46, 45, 0.15);
-      color: var(--accent-bright);
-    }
-
-    .pay-title {
-      font-weight: 700;
-      font-size: 1.05rem;
-      display: block;
-      color: var(--text-primary);
-    }
-
-    .pay-subtitle {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      display: block;
-      margin-top: 2px;
-    }
+    .pay-title { font-weight: 700; font-size: 1.05rem; display: block; color: var(--text-primary); }
+    .pay-subtitle { font-size: 0.82rem; color: var(--text-secondary); display: block; margin-top: 2px; }
 
     .checkout-step { display: none; }
     .checkout-step.active { display: block; }
@@ -1190,12 +1212,7 @@
       margin-bottom: 18px;
       border: 1px solid var(--border-subtle);
     }
-
-    .checkout-summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .checkout-summary-row { display: flex; justify-content: space-between; align-items: center; }
 
     .success-icon {
       width: 58px;
@@ -1210,12 +1227,7 @@
       border: 1px solid #2ecc71;
     }
 
-    .oauth-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
-    }
+    .oauth-options { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 
     .oauth-btn {
       display: flex;
@@ -1231,11 +1243,8 @@
       transition: all 0.25s var(--ease-out);
       width: 100%;
     }
-
     .oauth-btn-vk { background: #0077FF; color: #fff; }
-    .oauth-btn-vk:hover { background: #0066dd; }
     .oauth-btn-ya { background: #FC3F1D; color: #fff; }
-    .oauth-btn-ya:hover { background: #e03212; }
 
     .auth-tabs {
       display: grid;
@@ -1276,34 +1285,16 @@
       color: var(--text-muted);
       font-size: 0.85rem;
     }
-
-    .auth-divider::before,
-    .auth-divider::after {
+    .auth-divider::before, .auth-divider::after {
       content: '';
       flex: 1;
       border-bottom: 1px solid var(--border-highlight);
     }
-
     .auth-divider span { padding: 0 10px; }
 
-    .settings-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .settings-label {
-      font-size: 0.92rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: block;
-      color: var(--text-primary);
-    }
-
-    .settings-toggle-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .settings-group { margin-bottom: 20px; text-align: left; }
+    .settings-label { font-size: 0.92rem; font-weight: 700; margin-bottom: 10px; display: block; color: var(--text-primary); }
+    .settings-toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .setting-pill-btn {
       padding: 12px 14px;
@@ -1320,9 +1311,7 @@
       gap: 8px;
       transition: all 0.2s ease;
     }
-
     .setting-pill-btn:hover { border-color: var(--accent); }
-
     .setting-pill-btn.active {
       background: var(--accent);
       color: #fff;
@@ -1330,14 +1319,7 @@
       box-shadow: 0 4px 15px var(--accent-glow);
     }
 
-    .admin-panel-trigger {
-      display: none;
-      border-color: rgba(230, 46, 45, 0.55);
-      color: var(--accent-bright);
-    }
-
-    .admin-panel-trigger.active { display: inline-flex; }
-
+    /* Админ Панель */
     .admin-modal-content {
       width: min(1120px, calc(100vw - 28px));
       max-width: 1120px;
@@ -1364,7 +1346,6 @@
       text-transform: uppercase;
       margin-bottom: 6px;
     }
-
     .admin-subtitle { color: var(--text-secondary); font-size: 0.9rem; }
 
     .admin-tabs {
@@ -1412,15 +1393,9 @@
       padding: 20px;
       box-shadow: var(--glass-shadow);
     }
-
     .admin-card h4 { font-size: 1.1rem; margin-bottom: 16px; }
 
-    .admin-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
+    .admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .admin-form-grid .wide { grid-column: 1 / -1; }
 
     .admin-upload {
@@ -1433,7 +1408,6 @@
       text-align: center;
       display: block;
     }
-
     .admin-upload:hover { border-color: var(--accent); color: var(--text-primary); }
 
     .admin-list { display: flex; flex-direction: column; gap: 10px; }
@@ -1448,20 +1422,10 @@
       border-radius: 14px;
       padding: 10px;
     }
-
     .admin-list-item.no-image { grid-template-columns: 1fr auto; }
-
-    .admin-list-thumb {
-      width: 62px;
-      height: 52px;
-      object-fit: cover;
-      border-radius: 10px;
-      background: var(--bg-elevated);
-    }
-
+    .admin-list-thumb { width: 62px; height: 52px; object-fit: cover; border-radius: 10px; background: var(--bg-elevated); }
     .admin-list-title { font-weight: 700; line-height: 1.25; }
     .admin-list-meta { color: var(--text-muted); font-size: 0.78rem; margin-top: 4px; }
-
     .admin-actions { display: flex; gap: 6px; }
 
     .admin-icon-btn {
@@ -1473,37 +1437,16 @@
       color: var(--text-primary);
       cursor: pointer;
     }
-
     .admin-icon-btn:hover { border-color: var(--accent); color: var(--accent-bright); }
 
-    .admin-status {
-      min-height: 20px;
-      margin-top: 10px;
-      color: #2ecc71;
-      font-size: 0.85rem;
-    }
+    .admin-status { min-height: 20px; margin-top: 10px; color: #2ecc71; font-size: 0.85rem; }
 
-    .promo-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
+    .promo-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 6px; }
     .promo-result { min-height: 20px; font-size: 0.82rem; color: var(--text-muted); }
     .promo-result.success { color: #2ecc71; }
     .promo-result.error { color: var(--accent-bright); }
 
-    .admin-only-note {
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: rgba(230, 46, 45, 0.08);
-      border: 1px solid rgba(230, 46, 45, 0.24);
-      color: var(--text-secondary);
-      font-size: 0.82rem;
-      margin-bottom: 16px;
-    }
-
+    /* Оптимизация под мобильные устройства: двигающаяся прокручиваемая верхняя часть */
     @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
@@ -1512,115 +1455,47 @@
         padding-top: calc(var(--header-h) + 40px);
         padding-bottom: 50px;
       }
-
-      .hero-desc {
-        margin: 0 auto 24px auto;
-      }
-
-      .hero-btns {
-        justify-content: center;
-      }
-
-      .hero-visual {
-        order: -1;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-
-      .hero-image-wrap {
-        width: 250px;
-        height: 250px;
-        transform: none !important;
-      }
-
-      .products-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .reviews-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .admin-layout { grid-template-columns: 1fr; }
+      .hero-desc { margin: 0 auto 24px auto; }
+      .hero-btns { justify-content: center; }
+      .hero-visual { order: -1; margin-top: 10px; margin-bottom: 10px; }
+      .hero-image-wrap { width: 250px; height: 250px; transform: none !important; }
+      .products-grid, .reviews-grid, .admin-layout { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
+      :root { --header-h: 68px; }
 
-      .mobile-menu-btn {
-        display: inline-flex;
-      }
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: inline-flex; }
+      .mobile-nav-drawer { display: flex; }
+      .container { padding: 0 12px; }
 
-      .mobile-nav-drawer {
-        display: flex;
+      /* Двигающаяся верхняя часть: кнопки шапки плавно скроллятся пальцем по горизонтали */
+      .header-actions {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 4px 0;
+        max-width: calc(100vw - 120px);
       }
+      .header-actions::-webkit-scrollbar { display: none; }
 
-      .header-actions .btn {
-        display: none;
-      }
+      .brand span { font-size: 1.05rem; }
+      .brand-avatar { width: 32px; height: 32px; }
 
-      .admin-panel-trigger.active { display: none; }
-
-      .container {
-        padding: 0 16px;
-      }
-
-      .hero {
-        padding-top: calc(var(--header-h) + 35px);
-      }
-
-      .hero-image-wrap {
-        width: 230px;
-        height: 230px;
-      }
-
-      .product-card {
-        padding: 24px 20px;
-      }
-
-      .product-card h3 {
-        font-size: 1.55rem;
-      }
-
-      .support-card {
-        padding: 35px 18px;
-      }
-
-      .support-card h3 {
-        font-size: 1.5rem;
-      }
-
-      .section-title {
-        font-size: 1.75rem;
-      }
-
-      .review-form-wrap, .user-purchases-block {
-        padding: 20px 16px;
-      }
-
-      .purchase-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .purchase-row .btn-sm {
-        align-self: flex-end;
-      }
-
-      .modal-content {
-        max-width: 100%;
-        border-radius: 20px;
-      }
-
-      .modal-body {
-        padding: 18px 16px;
-      }
-
-      .modal-image {
-        height: 170px;
-      }
+      .hero { padding-top: calc(var(--header-h) + 20px); }
+      .hero-image-wrap { width: 220px; height: 220px; }
+      .product-card { padding: 24px 18px; }
+      .product-card h3 { font-size: 1.55rem; }
+      .support-card { padding: 35px 18px; }
+      .support-card h3 { font-size: 1.5rem; }
+      .section-title { font-size: 1.75rem; }
+      .review-form-wrap, .user-purchases-block { padding: 20px 16px; }
+      .purchase-row { flex-direction: column; align-items: flex-start; }
+      .purchase-row .btn-sm { align-self: flex-end; }
+      .modal-content { max-width: 100%; border-radius: 20px; }
+      .modal-body { padding: 18px 16px; }
+      .modal-image { height: 170px; }
 
       .admin-shell { padding: 20px 14px; }
       .admin-topbar { flex-direction: column; }
@@ -1629,11 +1504,27 @@
       .admin-list-item { grid-template-columns: 52px 1fr; }
       .admin-list-thumb { width: 52px; height: 46px; }
       .admin-actions { grid-column: 1 / -1; justify-content: flex-end; }
+
+      /* Окно чата на смартфонах */
+      .chat-modal-content {
+        grid-template-columns: 1fr;
+        height: 85vh;
+      }
+      .chats-sidebar {
+        display: none; /* Переключение на полноэкранный чат */
+      }
+      .chats-sidebar.mobile-open {
+        display: flex;
+      }
+      .chat-main-area.mobile-closed {
+        display: none;
+      }
     }
   </style>
 </head>
 <body class="theme-dark glass-standard">
 
+  <!-- Шапка сайта -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="#" class="brand">
@@ -1649,18 +1540,18 @@
         <a href="#about">О проекте</a>
       </div>
 
+      <!-- Верхняя двигающаяся панель действий (прокручиваемая на телефоне) -->
       <div class="header-actions">
-        <!-- Кнопка Входа (если гость) -->
-        <button id="authLoginBtn" class="btn-login" onclick="openAuthModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-            <polyline points="10 17 15 12 10 7"></polyline>
-            <line x1="15" y1="12" x2="3" y2="12"></line>
+        <!-- Кнопка «Чаты» для покупателей[span_3](start_span)[span_3](end_span) -->
+        <button id="headerChatsBtn" class="btn-chats-header" onclick="openChatsModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <span>Войти</span>
+          <span>Чаты</span>
+          <span id="headerChatDot" class="chat-unread-dot"></span>
         </button>
 
-        <!-- Подсвечивающаяся пульсирующая кнопка Админ Панели в шапке (появляется при входе в washy20011@gmail.com) -->
+        <!-- Подсвечивающаяся кнопка Админ Панели (только для washy20011@gmail.com)[span_4](start_span)[span_4](end_span) -->
         <button id="headerAdminPanelBtn" class="btn-admin-header" onclick="openAdminPanel()" title="Панель администратора">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -1669,21 +1560,31 @@
           <span>Админ панель</span>
         </button>
 
-        <!-- Виджет профиля: ТОЛЬКО иконка и выход -->
+        <!-- Кнопка Входа (если гость)[span_5](start_span)[span_5](end_span) -->
+        <button id="authLoginBtn" class="btn-login" onclick="openAuthModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          <span>Войти</span>
+        </button>
+
+        <!-- Виджет профиля: ТОЛЬКО иконка и крестик выхода[span_6](start_span)[span_6](end_span) -->
         <div id="userProfileWidget" class="user-profile-widget">
           <div id="userAvatar" class="user-profile-avatar" title="Личный кабинет">U</div>
           <button class="user-logout-btn" onclick="logoutUser()" title="Выйти">✕</button>
         </div>
 
-        <!-- Настройки оформления -->
-        <button class="btn-settings" onclick="openSettingsModal()" title="Настройки темы">
+        <!-- Настройки оформления[span_7](start_span)[span_7](end_span) -->
+        <button class="btn-settings" onclick="openSettingsModal()" title="Настройки оформления">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
 
-        <a href="https://t.me/Federiko_990" target="_blank" rel="noopener noreferrer" class="btn">Связаться</a>
+        <a href="https://t.me/Federiko_990" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 8px 16px;">Связаться</a>
 
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" title="Открыть меню">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1698,6 +1599,7 @@
 
   <div class="mobile-nav-drawer" id="mobileDrawer">
     <a href="javascript:void(0)" id="mobileAdminPanelBtn" onclick="openAdminPanel(); toggleMobileMenu();" style="display:none;color:var(--accent-bright);">⚙ Админ панель</a>
+    <a href="javascript:void(0)" onclick="openChatsModal(); toggleMobileMenu();" style="color:#2AABEE;">💬 Чаты и поддержка</a>
     <a href="#products" onclick="toggleMobileMenu()">Каталог товаров</a>
     <a href="#reviews" onclick="toggleMobileMenu()">Отзывы покупателей ⭐</a>
     <a href="#support" onclick="toggleMobileMenu()">Служба поддержки</a>
@@ -1720,7 +1622,6 @@
       </div>
       <div class="hero-visual">
         <div class="hero-image-wrap">
-          <!-- Картинка в квадрате посередине главного экрана -->
           <img src="https://i.postimg.cc/13TCZpyJ/IMG-20261021-000012-300.jpg" alt="Главный аватар">
         </div>
       </div>
@@ -1729,7 +1630,6 @@
     <section id="products" class="products-section">
       <div class="container">
         <h2 class="section-title">Ассортимент</h2>
-
         <div class="products-grid" id="productsGrid"></div>
       </div>
     </section>
@@ -1747,7 +1647,6 @@
 
         <div class="review-form-wrap" id="reviewFormBlock">
           <h3>Оставить отзыв о покупке</h3>
-
           <div id="reviewLockNotice" class="review-lock-notice" style="display: none;"></div>
 
           <form id="addReviewForm" onsubmit="submitReview(event)">
@@ -1783,26 +1682,26 @@
       </div>
     </section>
 
+    <!-- Служба поддержки с возможностью написать во внутренний чат -->
     <section id="support" class="support-section">
       <div class="container">
         <h2 class="section-title">Служба поддержки</h2>
-
         <div class="support-card">
           <div class="support-icon-wrap">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </div>
-          <h3>Связь напрямую в Telegram</h3>
-          <p>Все вопросы, консультации и обсуждение заказов проходят в Telegram. Напишите, и мы сразу обсудим детали, сроки и формат работы.</p>
-          <a href="https://t.me/Federiko_990" class="btn-telegram" target="_blank" rel="noopener noreferrer">
-            <span>Перейти в Telegram</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7"></path>
-              <path d="M7 7h10v10"></path>
-            </svg>
-          </a>
+          <h3>Поддержка на сайте и в Telegram</h3>
+          <p>Вы можете написать напрямую нам во внутренний чат поддержки прямо на сайте (как на маркетплейсах), либо связаться в Telegram.</p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+            <button class="btn" onclick="openChatsModal()" style="padding: 13px 28px; font-size: 1rem;">
+              <span>💬 Написать в поддержку (Чат)</span>
+            </button>
+            <a href="https://t.me/Federiko_990" class="btn-telegram" target="_blank" rel="noopener noreferrer">
+              <span>Перейти в Telegram</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -1830,9 +1729,58 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.14.0</p>
+      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.19.0</p>
     </div>
   </footer>
+
+  <!-- ============================================================== -->
+  <!-- ОКНО ЧАТОВ И ПОДДЕРЖКИ (ИНТЕРФЕЙС КАК НА PLAYEROK)            -->
+  <!-- ============================================================== -->
+  <div class="modal-overlay" id="chatsModal" onclick="closeChatsModal(event)" hidden>
+    <div class="modal-content chat-modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeChatsModal(event)">✕</button>
+
+      <!-- Левая колонка со списком диалогов -->
+      <div class="chats-sidebar" id="customerChatsSidebar">
+        <div class="chats-sidebar-header">Чаты и диалоги</div>
+        <div class="chats-list">
+          <!-- Главный чат поддержки -->
+          <div class="chat-item active" onclick="selectSupportDialogue()">
+            <div class="chat-item-avatar" style="background:#2AABEE;">🎧</div>
+            <div class="chat-item-info">
+              <div class="chat-item-title">Служба поддержки Fedriko</div>
+              <div class="chat-item-preview" id="supportDialoguePreview">Мы всегда на связи...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая область активного чата -->
+      <div class="chat-main-area" id="customerChatArea">
+        <div class="chat-main-header">
+          <div class="chat-main-header-info">
+            <span class="chat-status-online"></span>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem;">Поддержка Fedriko Shops</div>
+              <div style="font-size: 0.72rem; color: #2ecc71;">В сети • Ответ в течение пары минут</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-messages-container" id="customerChatMessagesList"></div>
+
+        <form class="chat-input-container" onsubmit="sendCustomerMessage(event)">
+          <input type="text" id="customerChatInputField" class="chat-input-field" placeholder="Напишите ваш вопрос в поддержку..." autocomplete="off" required>
+          <button type="submit" class="chat-send-action-btn" title="Отправить">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!-- МОДАЛЬНОЕ ОКНО ТОВАРОВ -->
   <div class="modal-overlay" id="itemModal" onclick="closeModal(event)">
@@ -1847,7 +1795,7 @@
         </div>
         <div class="modal-desc" id="modalDesc">Описание товара.</div>
         <div class="modal-tg-hint">
-          Для консультации напишите нам в <a href="https://t.me/Federiko_990" target="_blank" rel="noopener noreferrer">Telegram</a>.
+          Для консультации напишите нам в <a href="https://t.me/Federiko_990" target="_blank" rel="noopener noreferrer">Telegram</a> или откройте наш чат поддержки на сайте.
         </div>
       </div>
     </div>
@@ -1969,8 +1917,8 @@
           </button>
         </div>
 
-        <div class="auth-divider" id="authDivider">
-          <span id="authDividerText">или через Email</span>
+        <div class="auth-divider">
+          <span>или через Email</span>
         </div>
 
         <!-- Панель Входа -->
@@ -2051,7 +1999,7 @@
     </div>
   </div>
 
-  <!-- ПАНЕЛЬ АДМИНИСТРАТОРА -->
+  <!-- ПАНЕЛЬ АДМИНИСТРАТОРА (С ДИАЛОГАМИ В РЕАЛЬНОМ ВРЕМЕНИ) -->
   <div class="modal-overlay" id="adminPanelModal" onclick="closeAdminPanel(event)" hidden>
     <div class="modal-content admin-modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeAdminPanel(event)">✕</button>
@@ -2060,7 +2008,7 @@
           <div>
             <div class="admin-kicker">Fedriko Control Center</div>
             <h3 class="modal-title" style="font-size:1.8rem;margin-bottom:4px;">Панель администратора</h3>
-            <p class="admin-subtitle">Управление каталогом и промокодами магазина</p>
+            <p class="admin-subtitle">Управление каталогом, промокодами и диалогами с клиентами</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="btn-secondary" type="button" onclick="closeAdminPanel()" style="padding:9px 14px;">Закрыть</button>
@@ -2070,8 +2018,10 @@
         <div class="admin-tabs">
           <button id="adminProductsTab" class="admin-tab-btn active" type="button" onclick="switchAdminView('products')">📦 Товары</button>
           <button id="adminPromosTab" class="admin-tab-btn" type="button" onclick="switchAdminView('promos')">🏷 Промокоды</button>
+          <button id="adminChatsTab" class="admin-tab-btn" type="button" onclick="switchAdminView('chats')">💬 Диалоги поддержки</button>
         </div>
 
+        <!-- 1. Товары -->
         <div id="adminProductsView" class="admin-view active">
           <div class="admin-layout">
             <div class="admin-card">
@@ -2128,6 +2078,7 @@
           </div>
         </div>
 
+        <!-- 2. Промокоды -->
         <div id="adminPromosView" class="admin-view">
           <div class="admin-layout">
             <div class="admin-card">
@@ -2158,13 +2109,49 @@
             </div>
           </div>
         </div>
+
+        <!-- 3. Диалоги поддержки для Админа в реальном времени -->
+        <div id="adminChatsView" class="admin-view">
+          <div class="admin-card" style="padding: 0; overflow: hidden;">
+            <div class="chat-modal-content" style="width: 100%; height: 500px; box-shadow: none;">
+              <!-- Список диалогов покупателей -->
+              <div class="chats-sidebar">
+                <div class="chats-sidebar-header">Диалоги клиентов</div>
+                <div class="chats-list" id="adminUserDialoguesList"></div>
+              </div>
+
+              <!-- Окно переписки админа с выбранным клиентом -->
+              <div class="chat-main-area">
+                <div class="chat-main-header">
+                  <div class="chat-main-header-info">
+                    <span class="chat-status-online"></span>
+                    <div>
+                      <div id="adminActiveChatUsername" style="font-weight: 700; font-size: 0.95rem;">Выберите диалог</div>
+                      <div id="adminActiveChatUserEmail" style="font-size: 0.72rem; color: var(--text-muted);">Клиент</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="chat-messages-container" id="adminChatMessagesList"></div>
+
+                <form class="chat-input-container" onsubmit="sendAdminMessage(event)">
+                  <input type="text" id="adminChatInputField" class="chat-input-field" placeholder="Ответить покупателю..." autocomplete="off" required>
+                  <button type="submit" class="chat-send-action-btn" title="Отправить">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ========================================== -->
-  <!-- FIREBASE AUTHENTICATION МОДУЛЬ             -->
-  <!-- ========================================== -->
+  <!-- FIREBASE AUTHENTICATION МОДУЛЬ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
@@ -2213,6 +2200,7 @@
         closeAdminPanel();
       }
       updatePurchasesAndReviewUI();
+      renderCustomerChatMessages();
     });
 
     window.registerWithEmail = async function(event) {
@@ -2234,7 +2222,7 @@
 
         document.getElementById('registerForm').reset();
         closeAuthModal();
-        alert(`Регистрация в Firebase успешна! Добро пожаловать, ${name}.`);
+        alert(`Регистрация успешна! Добро пожаловать, ${name}.`);
       } catch (error) {
         handleAuthError(error);
       }
@@ -2273,9 +2261,7 @@
     }
   </script>
 
-  <!-- ========================================== -->
-  <!-- ОСНОВНАЯ ЛОГИКА ИНТЕРФЕЙСА                 -->
-  <!-- ========================================== -->
+  <!-- ОСНОВНАЯ ЛОГИКА САЙТА, ДИАЛОГОВ И АДМИНКИ -->
   <script>
     let currentSelectedProduct = '';
     let currentItemTitleText = '';
@@ -2283,10 +2269,12 @@
     let currentItemBasePrice = 0;
     let currentSelectedRating = 5;
     let appliedPromo = null;
+    let activeAdminChatUserId = null;
 
     const ADMIN_EMAIL = 'washy20011@gmail.com';
     const PRODUCTS_STORAGE_KEY = 'fedriko_admin_products_v1';
     const PROMOS_STORAGE_KEY = 'fedriko_admin_promos_v1';
+    const CHATS_STORAGE_KEY = 'fedriko_support_chats_realtime_v2';
 
     const defaultProducts = [
       {
@@ -2326,6 +2314,25 @@
       renderProducts();
       loadReviews();
       updatePurchasesAndReviewUI();
+      renderCustomerChatMessages();
+
+      // Живой таймер обновления сообщений в реальном времени (каждые 800мс)
+      setInterval(() => {
+        if (!document.getElementById('chatsModal').hidden) {
+          renderCustomerChatMessages(false);
+        }
+        if (!document.getElementById('adminPanelModal').hidden && document.getElementById('adminChatsView').classList.contains('active')) {
+          renderAdminConversation(false);
+        }
+      }, 800);
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === CHATS_STORAGE_KEY) {
+        renderCustomerChatMessages(false);
+        renderAdminConversation(false);
+        renderAdminUserDialoguesList();
+      }
     });
 
     function getProducts() {
@@ -2384,7 +2391,7 @@
         avatar.innerText = (user.name || 'U').charAt(0).toUpperCase();
       }
 
-      // Проверка прав администратора для кнопки в шапке
+      // Активация кнопки админ-панели для washy20011@gmail.com[span_8](start_span)[span_8](end_span)
       const adminBtn = document.getElementById('headerAdminPanelBtn');
       const mobileAdminBtn = document.getElementById('mobileAdminPanelBtn');
       if (isAdmin()) {
@@ -2401,6 +2408,215 @@
       }
     }
 
+    /* ============================================================== */
+    /* ВНУТРЕННИЕ ЧАТЫ И ДИАЛОГИ (ПОКУПАТЕЛЬ / АДМИН В РЕАЛЬНОМ ВРЕМЕНИ) */
+    /* ============================================================== */
+    function getChatsDatabase() {
+      try {
+        const data = localStorage.getItem(CHATS_STORAGE_KEY);
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveChatsDatabase(data) {
+      localStorage.setItem(CHATS_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getOrCreateClientChatId() {
+      const user = window.currentFirebaseUser;
+      if (user) return user.id;
+      let guestChatId = localStorage.getItem('fedriko_client_dialogue_id');
+      if (!guestChatId) {
+        guestChatId = 'user_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+        localStorage.setItem('fedriko_client_dialogue_id', guestChatId);
+      }
+      return guestChatId;
+    }
+
+    function openChatsModal() {
+      const modal = document.getElementById('chatsModal');
+      modal.hidden = false;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderCustomerChatMessages(true);
+    }
+
+    function closeChatsModal(event) {
+      if (event) event.preventDefault();
+      const modal = document.getElementById('chatsModal');
+      modal.classList.remove('active');
+      modal.hidden = true;
+      document.body.style.overflow = 'auto';
+    }
+
+    function selectSupportDialogue() {
+      renderCustomerChatMessages(true);
+    }
+
+    function renderCustomerChatMessages(forceScroll = false) {
+      const list = document.getElementById('customerChatMessagesList');
+      if (!list) return;
+      const clientId = getOrCreateClientChatId();
+      const db = getChatsDatabase();
+      const dialogue = db[clientId] || { messages: [] };
+
+      if (!dialogue.messages.length) {
+        list.innerHTML = `
+          <div class="message-bubble incoming">
+            Здравствуйте! Добро пожаловать в поддержку Fedriko Shops 👋<br>
+            Напишите ваш вопрос по товарам, заказу или оформлению — мы ответим вам прямо здесь в реальном времени!
+            <div class="message-meta">${new Date().toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'})}</div>
+          </div>
+        `;
+        document.getElementById('supportDialoguePreview').innerText = 'Здравствуйте! Добро пожаловать...';
+        return;
+      }
+
+      const lastMsg = dialogue.messages[dialogue.messages.length - 1];
+      document.getElementById('supportDialoguePreview').innerText = (lastMsg.fromAdmin ? 'Поддержка: ' : 'Вы: ') + lastMsg.text;
+
+      list.innerHTML = dialogue.messages.map(msg => `
+        <div class="message-bubble ${msg.fromAdmin ? 'incoming' : 'outgoing'}">
+          ${escapeHtml(msg.text)}
+          <div class="message-meta">${msg.time}</div>
+        </div>
+      `).join('');
+
+      if (forceScroll) {
+        list.scrollTop = list.scrollHeight;
+      }
+    }
+
+    function sendCustomerMessage(event) {
+      event.preventDefault();
+      const input = document.getElementById('customerChatInputField');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const clientId = getOrCreateClientChatId();
+      const db = getChatsDatabase();
+      const user = window.currentFirebaseUser;
+      const userName = user ? user.name : 'Покупатель #' + clientId.slice(-4);
+      const userEmail = user ? user.email : 'Без Email';
+
+      if (!db[clientId]) {
+        db[clientId] = {
+          clientId: clientId,
+          userName: userName,
+          userEmail: userEmail,
+          updatedAt: Date.now(),
+          messages: []
+        };
+      }
+
+      db[clientId].userName = userName;
+      db[clientId].userEmail = userEmail;
+      db[clientId].updatedAt = Date.now();
+      db[clientId].messages.push({
+        text: text,
+        fromAdmin: false,
+        time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      saveChatsDatabase(db);
+      input.value = '';
+      renderCustomerChatMessages(true);
+    }
+
+    /* Панель диалогов администратора */
+    function renderAdminUserDialoguesList() {
+      const container = document.getElementById('adminUserDialoguesList');
+      if (!container) return;
+      const db = getChatsDatabase();
+      const clients = Object.keys(db).sort((a, b) => (db[b].updatedAt || 0) - (db[a].updatedAt || 0));
+
+      if (!clients.length) {
+        container.innerHTML = '<div style="padding:16px; font-size:0.85rem; color:var(--text-muted);">Активных диалогов нет.</div>';
+        return;
+      }
+
+      if (!activeAdminChatUserId || !db[activeAdminChatUserId]) {
+        activeAdminChatUserId = clients[0];
+      }
+
+      container.innerHTML = clients.map(id => {
+        const chat = db[id];
+        const lastMsg = chat.messages.length ? chat.messages[chat.messages.length - 1].text : 'Нет сообщений';
+        const isActive = id === activeAdminChatUserId;
+        return `
+          <div class="chat-item ${isActive ? 'active' : ''}" onclick="selectAdminDialogue('${id}')">
+            <div class="chat-item-avatar">${chat.userName.charAt(0).toUpperCase()}</div>
+            <div class="chat-item-info">
+              <div class="chat-item-title">${escapeHtml(chat.userName)}</div>
+              <div class="chat-item-preview">${escapeHtml(lastMsg)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderAdminConversation(false);
+    }
+
+    function selectAdminDialogue(clientId) {
+      activeAdminChatUserId = clientId;
+      renderAdminUserDialoguesList();
+      renderAdminConversation(true);
+    }
+
+    function renderAdminConversation(forceScroll = false) {
+      const list = document.getElementById('adminChatMessagesList');
+      const nameEl = document.getElementById('adminActiveChatUsername');
+      const emailEl = document.getElementById('adminActiveChatUserEmail');
+      if (!list || !activeAdminChatUserId) return;
+
+      const db = getChatsDatabase();
+      const chat = db[activeAdminChatUserId];
+
+      if (!chat) {
+        list.innerHTML = '<div style="padding:20px; color:var(--text-muted); text-align:center;">Выберите диалог слева</div>';
+        return;
+      }
+
+      nameEl.innerText = chat.userName;
+      emailEl.innerText = chat.userEmail;
+
+      list.innerHTML = chat.messages.map(msg => `
+        <div class="message-bubble ${msg.fromAdmin ? 'outgoing' : 'incoming'}">
+          ${escapeHtml(msg.text)}
+          <div class="message-meta">${msg.time}</div>
+        </div>
+      `).join('');
+
+      if (forceScroll) {
+        list.scrollTop = list.scrollHeight;
+      }
+    }
+
+    function sendAdminMessage(event) {
+      event.preventDefault();
+      const input = document.getElementById('adminChatInputField');
+      const text = input.value.trim();
+      if (!text || !activeAdminChatUserId) return;
+
+      const db = getChatsDatabase();
+      if (!db[activeAdminChatUserId]) return;
+
+      db[activeAdminChatUserId].updatedAt = Date.now();
+      db[activeAdminChatUserId].messages.push({
+        text: text,
+        fromAdmin: true,
+        time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      saveChatsDatabase(db);
+      input.value = '';
+      renderAdminConversation(true);
+      renderAdminUserDialoguesList();
+    }
+
+    /* Админ-панель */
     function openAdminPanel() {
       if (!isAdmin()) {
         alert("Доступ разрешен только владельцу washy20011@gmail.com!");
@@ -2408,6 +2624,7 @@
       }
       renderAdminProductsList();
       renderAdminPromosList();
+      renderAdminUserDialoguesList();
       const adminModal = document.getElementById('adminPanelModal');
       adminModal.hidden = false;
       adminModal.classList.add('active');
@@ -2424,12 +2641,17 @@
 
     function switchAdminView(view) {
       if (!isAdmin()) return;
-      const productsMode = view === 'products';
-      document.getElementById('adminProductsTab').classList.toggle('active', productsMode);
-      document.getElementById('adminPromosTab').classList.toggle('active', !productsMode);
-      document.getElementById('adminProductsView').classList.toggle('active', productsMode);
-      document.getElementById('adminPromosView').classList.toggle('active', !productsMode);
-      if (productsMode) renderAdminProductsList(); else renderAdminPromosList();
+      document.getElementById('adminProductsTab').classList.toggle('active', view === 'products');
+      document.getElementById('adminPromosTab').classList.toggle('active', view === 'promos');
+      document.getElementById('adminChatsTab').classList.toggle('active', view === 'chats');
+
+      document.getElementById('adminProductsView').classList.toggle('active', view === 'products');
+      document.getElementById('adminPromosView').classList.toggle('active', view === 'promos');
+      document.getElementById('adminChatsView').classList.toggle('active', view === 'chats');
+
+      if (view === 'products') renderAdminProductsList();
+      if (view === 'promos') renderAdminPromosList();
+      if (view === 'chats') renderAdminUserDialoguesList();
     }
 
     function renderAdminProductsList() {
@@ -2743,10 +2965,6 @@
       const regTab = document.getElementById('tabRegisterBtn');
       const loginPanel = document.getElementById('loginPanel');
       const regPanel = document.getElementById('registerPanel');
-      const oauthOptions = document.getElementById('oauthOptions');
-      const authDivider = document.getElementById('authDivider');
-      const vkText = document.getElementById('vkBtnText');
-      const yaText = document.getElementById('yaBtnText');
 
       [loginTab, regTab].forEach(button => button.classList.remove('active'));
       [loginPanel, regPanel].forEach(panel => panel.classList.remove('active'));
@@ -2754,22 +2972,10 @@
       if (tab === 'register') {
         regTab.classList.add('active');
         regPanel.classList.add('active');
-        oauthOptions.style.display = 'flex';
-        authDivider.style.display = 'flex';
-        vkText.innerText = 'Создать через VK ID';
-        yaText.innerText = 'Создать через Яндекс ID';
       } else {
         loginTab.classList.add('active');
         loginPanel.classList.add('active');
-        oauthOptions.style.display = 'flex';
-        authDivider.style.display = 'flex';
-        vkText.innerText = 'Войти через VK ID';
-        yaText.innerText = 'Войти через Яндекс ID';
       }
-    }
-
-    function getLoggedInUser() {
-      return window.currentFirebaseUser || null;
     }
 
     function loginWithVK() {
@@ -2796,7 +3002,7 @@
     }
 
     function addPurchaseToCurrentUser(itemTitle) {
-      const user = getLoggedInUser();
+      const user = window.currentFirebaseUser;
       const userId = user ? user.id : 'guest_' + Date.now();
       const userName = user ? user.name : 'Гость';
 
@@ -2824,7 +3030,7 @@
     }
 
     function updatePurchasesAndReviewUI() {
-      const user = getLoggedInUser();
+      const user = window.currentFirebaseUser;
       const listContainer = document.getElementById('purchasesListContainer');
       const counter = document.getElementById('purchasesCounter');
       const lockNotice = document.getElementById('reviewLockNotice');
@@ -3064,7 +3270,7 @@
 
     function submitReview(event) {
       event.preventDefault();
-      const user = getLoggedInUser();
+      const user = window.currentFirebaseUser;
       if (!user) {
         alert('Для отправки отзыва необходимо авторизоваться!');
         openAuthModal();
