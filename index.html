@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="application-version" content="0.13.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="application-version" content="0.14.0" />
   <title>Fedriko Shops — Дизайн и моды для Minecraft</title>
 
   <!-- VK ID SDK -->
@@ -170,6 +170,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      white-space: nowrap;
     }
 
     .btn:hover {
@@ -191,11 +192,46 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
     }
 
     .btn-login:hover {
       background: rgba(255, 255, 255, 0.15);
       transform: translateY(-2px);
+    }
+
+    /* Подсвечивающаяся кнопка редактирования в шапке */
+    .btn-edit-header {
+      display: none;
+      background: rgba(230, 46, 45, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent-bright);
+      padding: 7px 14px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      animation: headerPulse 2s infinite;
+      transition: all 0.25s var(--ease-out);
+    }
+
+    .btn-edit-header.active {
+      display: inline-flex;
+    }
+
+    @keyframes headerPulse {
+      0%, 100% {
+        box-shadow: 0 0 8px rgba(230, 46, 45, 0.3);
+        border-color: var(--accent);
+      }
+      50% {
+        box-shadow: 0 0 18px rgba(255, 77, 76, 0.8);
+        border-color: var(--accent-bright);
+        background: rgba(230, 46, 45, 0.25);
+      }
     }
 
     .user-profile-widget {
@@ -242,19 +278,19 @@
       color: var(--accent-bright);
     }
 
-    .user-edit-btn, .user-logout-btn {
+    .user-logout-btn {
       background: none;
       border: none;
       color: var(--text-muted);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px;
+      font-size: 1rem;
+      margin-left: 4px;
+      transition: color 0.2s;
     }
 
-    .user-edit-btn:hover { color: var(--text-primary); }
-    .user-logout-btn:hover { color: var(--accent-bright); }
+    .user-logout-btn:hover {
+      color: var(--accent-bright);
+    }
 
     .btn-settings {
       width: 38px;
@@ -320,8 +356,39 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
+    /* Выдвижная встроенная панель редактирования профиля под шапкой */
+    .edit-profile-drawer {
+      position: fixed;
+      top: var(--header-h);
+      left: 0; right: 0;
+      background: var(--modal-bg-start);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      border-bottom: 2px solid var(--accent);
+      z-index: 98;
+      max-height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      padding: 24px 20px;
+      transform: translateY(-110%);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.35s var(--ease-out), opacity 0.3s, visibility 0.3s;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    }
+
+    .edit-profile-drawer.active {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .edit-drawer-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
     .hero {
-      padding-top: calc(var(--header-h) + 70px);
+      padding-top: calc(var(--header-h) + 40px);
       padding-bottom: 70px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -801,6 +868,7 @@
       border-radius: 99px;
     }
 
+    /* Поддержка */
     .support-section {
       padding: 70px 0;
       border-top: 1px solid var(--border-subtle);
@@ -955,6 +1023,7 @@
       font-weight: 600;
     }
 
+    /* Модальные окна */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -1657,10 +1726,12 @@
       </div>
 
       <div class="header-actions">
+        <!-- Кнопка панели администратора -->
         <button id="adminPanelBtn" class="btn-login admin-panel-trigger" onclick="openAdminPanel()" title="Панель администратора" hidden>
           <span>⚙ Admin Panel</span>
         </button>
 
+        <!-- Кнопка Входа (если гость) -->
         <button id="authLoginBtn" class="btn-login" onclick="openAuthModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
@@ -1670,18 +1741,23 @@
           <span>Войти</span>
         </button>
 
+        <!-- Подсвечивающаяся кнопка редактирования профиля в шапке (активна при входе) -->
+        <button id="headerEditProfileBtn" class="btn-edit-header" onclick="toggleProfileEditDrawer()" title="Редактировать данные аккаунта">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span>Редактировать</span>
+        </button>
+
+        <!-- Виджет пользователя -->
         <div id="userProfileWidget" class="user-profile-widget">
-          <div id="userAvatar" class="user-profile-avatar" onclick="openProfileEditModal()" title="Настройки аккаунта">U</div>
-          <span id="userName" class="user-profile-name" onclick="openProfileEditModal()" title="Редактировать профиль">Пользователь</span>
-          <button class="user-edit-btn" onclick="openProfileEditModal()" title="Редактировать профиль">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20h9"></path>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-            </svg>
-          </button>
+          <div id="userAvatar" class="user-profile-avatar" onclick="toggleProfileEditDrawer()" title="Настройки аккаунта">U</div>
+          <span id="userName" class="user-profile-name" onclick="toggleProfileEditDrawer()" title="Редактировать профиль">Пользователь</span>
           <button class="user-logout-btn" onclick="logoutUser()" title="Выйти">✕</button>
         </div>
 
+        <!-- Настройки оформления -->
         <button class="btn-settings" onclick="openSettingsModal()" title="Настройки темы">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -1701,6 +1777,58 @@
       </div>
     </div>
   </header>
+
+  <!-- Встроенная выдвижная панель редактирования профиля (выезжает прямо под шапкой) -->
+  <div id="profileEditDrawer" class="edit-profile-drawer">
+    <div class="edit-drawer-inner">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:1.3rem; font-weight:700;">Редактирование профиля</h3>
+        <button onclick="toggleProfileEditDrawer()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">✕</button>
+      </div>
+
+      <form id="drawerProfileForm" onsubmit="saveUserProfileChanges(event)">
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px;">
+          <div id="drawerAvatarPreview" style="width:60px; height:60px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; overflow:hidden; flex-shrink:0;">U</div>
+          <div style="flex:1;">
+            <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">Ссылка на аватар (URL):</label>
+            <input type="url" id="drawerAvatarInput" class="form-input" placeholder="https://..." oninput="updateDrawerAvatarPreview()">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Имя:</label>
+            <input type="text" id="drawerNameInput" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label>Логин:</label>
+            <input type="text" id="drawerUsernameInput" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Новый пароль (оставьте пустым, если не меняете):</label>
+          <input type="password" id="drawerPasswordInput" class="form-input" placeholder="••••••••">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label>Телефон:</label>
+            <input type="tel" id="drawerPhoneInput" class="form-input" placeholder="+7 (999) 000-00-00">
+          </div>
+          <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="drawerEmailInput" class="form-input" readonly style="opacity:0.65;">
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button type="submit" class="btn" style="flex:1; padding:10px;">Сохранить изменения</button>
+          <button type="button" class="btn-secondary" style="padding:10px 18px;" onclick="toggleProfileEditDrawer()">Закрыть</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="mobile-nav-drawer" id="mobileDrawer">
     <a href="javascript:void(0)" id="mobileAdminPanelBtn" onclick="openAdminPanel(); toggleMobileMenu();" style="display:none;color:var(--accent-bright);">⚙ Admin Panel</a>
@@ -1836,7 +1964,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.13.0</p>
+      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.14.0</p>
     </div>
   </footer>
 
@@ -2038,60 +2166,6 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ АККАУНТА -->
-  <div class="modal-overlay" id="profileEditModal" onclick="closeProfileEditModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 440px;">
-      <button class="modal-close" onclick="closeProfileEditModal(event)">✕</button>
-      <div class="modal-body" style="padding: 24px 20px;">
-        <h3 class="modal-title" style="font-size: 1.5rem; margin-bottom: 4px; text-align: center;">Редактирование профиля</h3>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center; margin-bottom: 18px;">Настройте данные личного кабинета</p>
-
-        <form id="profileEditForm" onsubmit="saveUserProfileChanges(event)">
-          <div class="edit-profile-avatar-preview">
-            <div id="editAvatarPreview" class="edit-avatar-circle">U</div>
-          </div>
-
-          <div class="form-group">
-            <label>Ссылка на фото профиля (URL):</label>
-            <input type="url" id="editAvatarUrlInput" class="form-input" placeholder="https://i.postimg.cc/..." oninput="updateAvatarPreview()">
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div class="form-group">
-              <label>Имя:</label>
-              <input type="text" id="editNameInput" class="form-input" placeholder="Ваше имя" required>
-            </div>
-            <div class="form-group">
-              <label>Логин:</label>
-              <input type="text" id="editUsernameInput" class="form-input" placeholder="@nickname" required>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Пароль аккаунта (оставьте пустым, если не меняете):</label>
-            <input type="password" id="editPasswordInput" class="form-input" placeholder="Новый пароль">
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div class="form-group">
-              <label>Телефон:</label>
-              <input type="tel" id="editPhoneInput" class="form-input" placeholder="+7 (999) 000-00-00">
-            </div>
-            <div class="form-group">
-              <label>Email:</label>
-              <input type="email" id="editEmailInput" class="form-input" placeholder="example@mail.ru" readonly style="opacity: 0.7;">
-            </div>
-          </div>
-
-          <div style="display: flex; gap: 10px; margin-top: 18px;">
-            <button type="button" class="btn-secondary" style="padding: 10px 16px;" onclick="closeProfileEditModal()">Отмена</button>
-            <button type="submit" class="btn" style="flex: 1; padding: 11px;">Сохранить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <!-- МОДАЛЬНОЕ ОКНО НАСТРОЕК ТЕМЫ -->
   <div class="modal-overlay" id="settingsModal" onclick="closeSettingsModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 400px;">
@@ -2286,7 +2360,9 @@
       } else {
         window.currentFirebaseUser = null;
         document.getElementById('authLoginBtn').style.display = 'inline-flex';
+        document.getElementById('headerEditProfileBtn').classList.remove('active');
         document.getElementById('userProfileWidget').classList.remove('active');
+        document.getElementById('profileEditDrawer').classList.remove('active');
       }
       updatePurchasesAndReviewUI();
     });
@@ -2352,41 +2428,41 @@
       const user = auth.currentUser;
       if (!user) return;
 
-      const newName = document.getElementById('editNameInput').value.trim();
-      const newUsername = document.getElementById('editUsernameInput').value.trim();
-      const newPassword = document.getElementById('editPasswordInput').value;
-      const newPhone = document.getElementById('editPhoneInput').value.trim();
-      const newAvatarUrl = document.getElementById('editAvatarUrlInput').value.trim();
+      const name = document.getElementById('drawerNameInput').value.trim();
+      const username = document.getElementById('drawerUsernameInput').value.trim();
+      const password = document.getElementById('drawerPasswordInput').value;
+      const phone = document.getElementById('drawerPhoneInput').value.trim();
+      const avatarUrl = document.getElementById('drawerAvatarInput').value.trim();
 
-      if (!newName || !newUsername) {
+      if (!name || !username) {
         alert('Имя и логин не могут быть пустыми!');
         return;
       }
 
       try {
         await updateProfile(user, {
-          displayName: newName,
-          photoURL: newAvatarUrl || null
+          displayName: name,
+          photoURL: avatarUrl || null
         });
 
-        if (newPassword && newPassword.length >= 6) {
-          await updatePassword(user, newPassword);
+        if (password && password.length >= 6) {
+          await updatePassword(user, password);
         }
 
         localStorage.setItem('fedriko_user_extra_' + user.uid, JSON.stringify({
-          name: newName,
-          username: newUsername,
-          phone: newPhone,
-          avatarUrl: newAvatarUrl
+          name: name,
+          username: username,
+          phone: phone,
+          avatarUrl: avatarUrl
         }));
 
-        window.currentFirebaseUser.name = newName;
-        window.currentFirebaseUser.username = newUsername;
-        window.currentFirebaseUser.avatarUrl = newAvatarUrl;
-        window.currentFirebaseUser.phone = newPhone;
+        window.currentFirebaseUser.name = name;
+        window.currentFirebaseUser.username = username;
+        window.currentFirebaseUser.avatarUrl = avatarUrl;
+        window.currentFirebaseUser.phone = phone;
 
         renderUserProfile(window.currentFirebaseUser);
-        closeProfileEditModal();
+        toggleProfileEditDrawer();
         alert('Данные профиля успешно обновлены!');
       } catch (error) {
         handleAuthError(error);
@@ -2937,6 +3013,7 @@
 
     function renderUserProfile(user) {
       document.getElementById('authLoginBtn').style.display = 'none';
+      document.getElementById('headerEditProfileBtn').classList.add('active');
       const widget = document.getElementById('userProfileWidget');
       const avatar = document.getElementById('userAvatar');
       const name = document.getElementById('userName');
@@ -2956,50 +3033,45 @@
       }
     }
 
+    function toggleProfileEditDrawer() {
+      const drawer = document.getElementById('profileEditDrawer');
+      const user = window.currentFirebaseUser;
+      if (!user) {
+        openAuthModal();
+        return;
+      }
+
+      drawer.classList.toggle('active');
+
+      if (drawer.classList.contains('active')) {
+        document.getElementById('drawerNameInput').value = user.name || '';
+        document.getElementById('drawerUsernameInput').value = user.username || '';
+        document.getElementById('drawerPasswordInput').value = '';
+        document.getElementById('drawerPhoneInput').value = user.phone || '';
+        document.getElementById('drawerEmailInput').value = user.email || '';
+        document.getElementById('drawerAvatarInput').value = user.avatarUrl || '';
+        updateDrawerAvatarPreview();
+      }
+    }
+
+    function updateDrawerAvatarPreview() {
+      const preview = document.getElementById('drawerAvatarPreview');
+      const url = document.getElementById('drawerAvatarInput').value.trim();
+      const name = document.getElementById('drawerNameInput').value.trim() || 'U';
+
+      if (url) {
+        preview.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerText='${name.charAt(0).toUpperCase()}';">`;
+      } else {
+        preview.innerText = name.charAt(0).toUpperCase();
+      }
+    }
+
     function loginWithVK() {
       alert("Для полноценной работы VK ID настройте его в личном кабинете VK Developers. Используйте регистрацию и вход через Email.");
     }
 
     function loginWithYandex() {
       alert("Для полноценной работы Яндекс ID настройте его в Яндекс OAuth. Используйте регистрацию и вход через Email.");
-    }
-
-    function openProfileEditModal() {
-      const user = getLoggedInUser();
-      if (!user) {
-        openAuthModal();
-        return;
-      }
-
-      document.getElementById('editNameInput').value = user.name || '';
-      document.getElementById('editUsernameInput').value = user.username || user.name || '';
-      document.getElementById('editPasswordInput').value = '';
-      document.getElementById('editPhoneInput').value = user.phone || '';
-      document.getElementById('editEmailInput').value = user.email || '';
-      document.getElementById('editAvatarUrlInput').value = user.avatarUrl || '';
-
-      updateAvatarPreview();
-
-      document.getElementById('profileEditModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeProfileEditModal(event) {
-      if (event) event.preventDefault();
-      document.getElementById('profileEditModal').classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-
-    function updateAvatarPreview() {
-      const preview = document.getElementById('editAvatarPreview');
-      const url = document.getElementById('editAvatarUrlInput').value.trim();
-      const name = document.getElementById('editNameInput').value.trim() || 'U';
-
-      if (url) {
-        preview.innerHTML = `<img src="${url}" onerror="this.onerror=null;this.parentElement.innerText='${name.charAt(0).toUpperCase()}';">`;
-      } else {
-        preview.innerText = name.charAt(0).toUpperCase();
-      }
     }
 
     function getAllPurchases() {
