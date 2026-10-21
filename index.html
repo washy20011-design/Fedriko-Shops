@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="application-version" content="0.21.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="application-version" content="0.22.0" />
   <title>Fedriko Shops — Дизайн и моды для Minecraft</title>
 
   <!-- VK ID SDK -->
@@ -100,7 +100,6 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* Шапка сайта */
     .site-header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -357,7 +356,6 @@
       border-bottom: 1px solid var(--border-subtle);
     }
 
-    /* Hero */
     .hero {
       padding-top: calc(var(--header-h) + 40px);
       padding-bottom: 70px;
@@ -544,7 +542,14 @@
     }
     .price-tag span { color: var(--accent-bright); }
 
-    /* Отзывы */
+    .product-card.clicked { animation: clickWarp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+    @keyframes clickWarp {
+      0% { transform: scale(1) translateY(0); }
+      40% { transform: scale(0.95) translateY(6px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+
     .reviews-section { padding: 70px 0; border-top: 1px solid var(--border-subtle); }
     .reviews-header-block { display: flex; flex-direction: column; align-items: center; margin-bottom: 35px; }
 
@@ -697,7 +702,6 @@
     .purchase-info p { font-size: 0.8rem; color: var(--text-muted); }
     .btn-sm { padding: 6px 14px; font-size: 0.82rem; border-radius: 99px; }
 
-    /* Служба поддержки */
     .support-section { padding: 70px 0; border-top: 1px solid var(--border-subtle); }
 
     .support-card {
@@ -805,7 +809,6 @@
     .footer-text { color: var(--text-muted); font-size: 0.92rem; letter-spacing: 0.02em; }
     .footer-text span { color: var(--text-primary); font-weight: 600; }
 
-    /* ЧАТЫ И ДИАЛОГИ (ПОДДЕРЖКА) */
     .chat-modal-content {
       width: min(780px, calc(100vw - 20px));
       max-width: 780px;
@@ -943,7 +946,6 @@
     }
     .chat-send-action-btn:hover { background: var(--accent-bright); transform: scale(1.05); }
 
-    /* УПРАВЛЕНИЕ РЕАЛЬНЫМИ ПОЛЬЗОВАТЕЛЯМИ В АДМИНКЕ */
     .admin-users-table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border-subtle);
@@ -987,55 +989,56 @@
       align-items: center;
     }
 
-    /* Мобильная адаптация */
-    @media (max-width: 768px) {
-      :root { --header-h: 68px; }
-
-      .nav-links { display: none; }
-      .mobile-menu-btn { display: inline-flex; }
-      .mobile-nav-drawer { display: flex; }
-      .container { padding: 0 12px; }
-
-      .header-actions {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        padding: 4px 0;
-        max-width: calc(100vw - 120px);
-      }
-      .header-actions::-webkit-scrollbar { display: none; }
-
-      .brand span { font-size: 1.05rem; }
-      .brand-avatar { width: 32px; height: 32px; }
-
-      .hero { padding-top: calc(var(--header-h) + 20px); }
-      .hero-image-wrap { width: 220px; height: 220px; }
-      .product-card { padding: 24px 18px; }
-      .product-card h3 { font-size: 1.55rem; }
-      .support-card { padding: 35px 18px; }
-      .support-card h3 { font-size: 1.5rem; }
-      .section-title { font-size: 1.75rem; }
-      .review-form-wrap, .user-purchases-block { padding: 20px 16px; }
-      .purchase-row { flex-direction: column; align-items: flex-start; }
-      .purchase-row .btn-sm { align-self: flex-end; }
-      .modal-content { max-width: 100%; border-radius: 20px; }
-      .modal-body { padding: 18px 16px; }
-      .modal-image { height: 170px; }
-
-      .admin-shell { padding: 20px 14px; }
-      .admin-topbar { flex-direction: column; }
-      .admin-form-grid { grid-template-columns: 1fr; }
-      .admin-form-grid .wide { grid-column: auto; }
-      .admin-list-item { grid-template-columns: 52px 1fr; }
-      .admin-list-thumb { width: 52px; height: 46px; }
-      .admin-actions { grid-column: 1 / -1; justify-content: flex-end; }
-
-      .chat-modal-content {
-        grid-template-columns: 1fr;
-        height: 85vh;
-      }
-      .chats-sidebar { display: none; }
+    /* ФИКС НАЖАТИЯ КНОПОК: полностью скрываем неактивные оверлеи */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 16px;
     }
+
+    .modal-overlay.active {
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: all !important;
+    }
+
+    .modal-overlay[hidden],
+    .modal-overlay:not(.active) {
+      display: none !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+
+    .modal-content {
+      background: linear-gradient(165deg, var(--modal-bg-start) 0%, var(--modal-bg-end) 100%);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.35s var(--ease-out);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 35px var(--accent-glow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      pointer-events: all !important;
+    }
+
+    .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
   </style>
 </head>
 <body class="theme-dark glass-standard">
@@ -1054,9 +1057,7 @@
         <a href="#about">О проекте</a>
       </div>
 
-      <!-- Верхняя прокручиваемая панель действий -->
       <div class="header-actions">
-        <!-- Кнопка «Чаты» для покупателей[span_0](start_span)[span_0](end_span) -->
         <button id="headerChatsBtn" class="btn-chats-header" onclick="openChatsModal()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -1064,16 +1065,14 @@
           <span>Чаты</span>
         </button>
 
-        <!-- Подсвечивающаяся кнопка Админ Панели для washy20011@gmail.com[span_1](start_span)[span_1](end_span) -->
         <button id="headerAdminPanelBtn" class="btn-admin-header" onclick="openAdminPanel()" title="Панель администратора">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
           <span>Админ панель</span>
         </button>
 
-        <!-- Кнопка Входа[span_2](start_span)[span_2](end_span) -->
         <button id="authLoginBtn" class="btn-login" onclick="openAuthModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
@@ -1083,17 +1082,15 @@
           <span>Войти</span>
         </button>
 
-        <!-- Профиль: иконка и выход[span_3](start_span)[span_3](end_span) -->
         <div id="userProfileWidget" class="user-profile-widget">
           <div id="userAvatar" class="user-profile-avatar" title="Личный кабинет">U</div>
           <button class="user-logout-btn" onclick="logoutUser()" title="Выйти">✕</button>
         </div>
 
-        <!-- Настройки оформления[span_4](start_span)[span_4](end_span) -->
         <button class="btn-settings" onclick="openSettingsModal()" title="Настройки темы">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
 
@@ -1195,7 +1192,6 @@
       </div>
     </section>
 
-    <!-- Служба поддержки -->
     <section id="support" class="support-section">
       <div class="container">
         <h2 class="section-title">Служба поддержки</h2>
@@ -1242,12 +1238,12 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.21.0</p>
+      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.22.0</p>
     </div>
   </footer>
 
-  <!-- ОКНО ЧАТОВ И ПОДДЕРЖКИ (PLAYEROK STYLE) -->
-  <div class="modal-overlay" id="chatsModal" onclick="closeChatsModal(event)" hidden>
+  <!-- ОКНО ЧАТОВ И ПОДДЕРЖКИ -->
+  <div class="modal-overlay" id="chatsModal" onclick="closeChatsModal(event)">
     <div class="modal-content chat-modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeChatsModal(event)">✕</button>
 
@@ -1399,7 +1395,7 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ И РЕГИСТРАЦИИ (С КНОПКОЙ СБРОСА ПАРОЛЯ) -->
+  <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ И РЕГИСТРАЦИИ -->
   <div class="modal-overlay" id="authModal" onclick="closeAuthModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 420px;">
       <button class="modal-close" onclick="closeAuthModal(event)">✕</button>
@@ -1440,7 +1436,6 @@
               <input type="password" id="authPasswordInput" class="form-input" placeholder="Введите пароль" autocomplete="current-password" required>
             </div>
 
-            <!-- Кнопка сброса пароля -->
             <div style="text-align: right; margin-bottom: 14px;">
               <a href="javascript:void(0)" onclick="resetUserPassword()" style="font-size: 0.8rem; color: var(--accent-bright); text-decoration: underline;">
                 Забыли пароль? Сбросить
@@ -1514,7 +1509,7 @@
   </div>
 
   <!-- МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ ПОЛЬЗОВАТЕЛЯ И СКИДОК ДЛЯ АДМИНА -->
-  <div class="modal-overlay" id="adminUserEditModal" onclick="closeAdminUserEditModal(event)" hidden>
+  <div class="modal-overlay" id="adminUserEditModal" onclick="closeAdminUserEditModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 460px;">
       <button class="modal-close" onclick="closeAdminUserEditModal(event)">✕</button>
       <div class="modal-body">
@@ -1565,7 +1560,7 @@
   </div>
 
   <!-- ПАНЕЛЬ АДМИНИСТРАТОРА -->
-  <div class="modal-overlay" id="adminPanelModal" onclick="closeAdminPanel(event)" hidden>
+  <div class="modal-overlay" id="adminPanelModal" onclick="closeAdminPanel(event)">
     <div class="modal-content admin-modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeAdminPanel(event)">✕</button>
       <div class="admin-shell">
@@ -1877,18 +1872,17 @@
       }
     };
 
-    // ФУНКЦИЯ СБРОСА ПАРОЛЯ
     window.resetUserPassword = async function() {
       const email = document.getElementById('authEmailInput').value.trim();
       if (!email) {
-        alert("Пожалуйста, введите ваш адрес Email в поле ввода выше, чтобы получить ссылку для сброса пароля.");
+        alert("Пожалуйста, введите ваш Email в поле выше, чтобы получить ссылку для сброса пароля.");
         document.getElementById('authEmailInput').focus();
         return;
       }
 
       try {
         await sendPasswordResetEmail(auth, email);
-        alert(`Письмо со ссылкой для сброса пароля успешно отправлено на ${email}! Проверьте входящие сообщения (и папку «Спам»).`);
+        alert(`Письмо со ссылкой для сброса пароля успешно отправлено на ${email}! Проверьте почту (включая папку «Спам»).`);
       } catch (error) {
         let msg = "Не удалось отправить письмо со сбросом: " + error.message;
         if (error.code === 'auth/user-not-found') msg = "Пользователь с такой почтой не найден!";
@@ -1965,10 +1959,12 @@
       renderCustomerChatMessages();
 
       setInterval(() => {
-        if (!document.getElementById('chatsModal').hidden) {
+        const chatsModal = document.getElementById('chatsModal');
+        if (chatsModal && chatsModal.classList.contains('active')) {
           renderCustomerChatMessages(false);
         }
-        if (!document.getElementById('adminPanelModal').hidden && document.getElementById('adminChatsView').classList.contains('active')) {
+        const adminModal = document.getElementById('adminPanelModal');
+        if (adminModal && adminModal.classList.contains('active') && document.getElementById('adminChatsView').classList.contains('active')) {
           renderAdminConversation(false);
         }
       }, 800);
@@ -2166,7 +2162,6 @@
       prodSelect.value = user.discountProductId || 'ALL';
 
       const modal = document.getElementById('adminUserEditModal');
-      modal.hidden = false;
       modal.classList.add('active');
     }
 
@@ -2174,7 +2169,6 @@
       if (e) e.preventDefault();
       const modal = document.getElementById('adminUserEditModal');
       modal.classList.remove('active');
-      modal.hidden = true;
     }
 
     function saveAdminUserChanges(e) {
@@ -2231,7 +2225,6 @@
 
     function openChatsModal() {
       const modal = document.getElementById('chatsModal');
-      modal.hidden = false;
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
       renderCustomerChatMessages(true);
@@ -2241,7 +2234,6 @@
       if (event) event.preventDefault();
       const modal = document.getElementById('chatsModal');
       modal.classList.remove('active');
-      modal.hidden = true;
       document.body.style.overflow = 'auto';
     }
 
@@ -2401,7 +2393,7 @@
       renderAdminUserDialoguesList();
     }
 
-    /* Админ-панель: переключение вкладок */
+    /* Админ-панель */
     function openAdminPanel() {
       if (!isAdmin()) {
         alert("Доступ разрешен только владельцу washy20011@gmail.com!");
@@ -2412,7 +2404,6 @@
       renderAdminUsersTable();
       renderAdminUserDialoguesList();
       const adminModal = document.getElementById('adminPanelModal');
-      adminModal.hidden = false;
       adminModal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
@@ -2421,7 +2412,6 @@
       if (event) event.preventDefault();
       const adminModal = document.getElementById('adminPanelModal');
       adminModal.classList.remove('active');
-      adminModal.hidden = true;
       document.body.style.overflow = 'auto';
     }
 
