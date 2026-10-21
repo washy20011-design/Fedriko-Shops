@@ -200,11 +200,11 @@
       transform: translateY(-2px);
     }
 
-    /* Подсвечивающаяся кнопка редактирования в шапке */
-    .btn-edit-header {
+    /* Подсвечивающаяся пульсирующая кнопка Админ Панели в шапке */
+    .btn-admin-header {
       display: none;
       background: rgba(230, 46, 45, 0.15);
-      border: 1px solid var(--accent);
+      border: 1.5px solid var(--accent);
       color: var(--accent-bright);
       padding: 7px 14px;
       border-radius: 99px;
@@ -218,29 +218,30 @@
       transition: all 0.25s var(--ease-out);
     }
 
-    .btn-edit-header.active {
+    .btn-admin-header.active {
       display: inline-flex;
     }
 
     @keyframes headerPulse {
       0%, 100% {
-        box-shadow: 0 0 8px rgba(230, 46, 45, 0.3);
+        box-shadow: 0 0 8px rgba(230, 46, 45, 0.35);
         border-color: var(--accent);
       }
       50% {
-        box-shadow: 0 0 18px rgba(255, 77, 76, 0.8);
+        box-shadow: 0 0 18px rgba(255, 77, 76, 0.85);
         border-color: var(--accent-bright);
         background: rgba(230, 46, 45, 0.25);
       }
     }
 
+    /* Блок аккаунта — ТОЛЬКО иконка и выход */
     .user-profile-widget {
       display: none;
       align-items: center;
       gap: 6px;
       background: var(--border-subtle);
       border: 1px solid var(--border-highlight);
-      padding: 4px 10px 4px 4px;
+      padding: 4px 8px 4px 4px;
       border-radius: 99px;
     }
 
@@ -260,22 +261,8 @@
       justify-content: center;
       font-weight: bold;
       font-size: 0.85rem;
-      cursor: pointer;
+      cursor: default;
       overflow: hidden;
-    }
-
-    .user-profile-name {
-      font-size: 0.88rem;
-      font-weight: 600;
-      max-width: 95px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
-
-    .user-profile-name:hover {
-      color: var(--accent-bright);
     }
 
     .user-logout-btn {
@@ -284,7 +271,10 @@
       color: var(--text-muted);
       cursor: pointer;
       font-size: 1rem;
-      margin-left: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 4px;
       transition: color 0.2s;
     }
 
@@ -354,37 +344,6 @@
       color: var(--text-primary);
       padding: 8px 0;
       border-bottom: 1px solid var(--border-subtle);
-    }
-
-    /* Выдвижная встроенная панель редактирования профиля под шапкой */
-    .edit-profile-drawer {
-      position: fixed;
-      top: var(--header-h);
-      left: 0; right: 0;
-      background: var(--modal-bg-start);
-      backdrop-filter: var(--glass-filter);
-      -webkit-backdrop-filter: var(--glass-filter);
-      border-bottom: 2px solid var(--accent);
-      z-index: 98;
-      max-height: calc(100vh - var(--header-h));
-      overflow-y: auto;
-      padding: 24px 20px;
-      transform: translateY(-110%);
-      opacity: 0;
-      visibility: hidden;
-      transition: transform 0.35s var(--ease-out), opacity 0.3s, visibility 0.3s;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-    }
-
-    .edit-profile-drawer.active {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .edit-drawer-inner {
-      max-width: 600px;
-      margin: 0 auto;
     }
 
     .hero {
@@ -1327,37 +1286,6 @@
 
     .auth-divider span { padding: 0 10px; }
 
-    .edit-profile-avatar-preview {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .edit-avatar-circle {
-      width: 74px;
-      height: 74px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      object-fit: cover;
-      background: var(--bg-elevated);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--accent-bright);
-      overflow: hidden;
-      box-shadow: 0 0 16px var(--accent-glow);
-    }
-
-    .edit-avatar-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .settings-group {
       margin-bottom: 20px;
       text-align: left;
@@ -1635,10 +1563,6 @@
 
       .admin-panel-trigger.active { display: none; }
 
-      .user-profile-name {
-        max-width: 70px;
-      }
-
       .container {
         padding: 0 16px;
       }
@@ -1726,11 +1650,6 @@
       </div>
 
       <div class="header-actions">
-        <!-- Кнопка панели администратора -->
-        <button id="adminPanelBtn" class="btn-login admin-panel-trigger" onclick="openAdminPanel()" title="Панель администратора" hidden>
-          <span>⚙ Admin Panel</span>
-        </button>
-
         <!-- Кнопка Входа (если гость) -->
         <button id="authLoginBtn" class="btn-login" onclick="openAuthModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1741,19 +1660,18 @@
           <span>Войти</span>
         </button>
 
-        <!-- Подсвечивающаяся кнопка редактирования профиля в шапке (активна при входе) -->
-        <button id="headerEditProfileBtn" class="btn-edit-header" onclick="toggleProfileEditDrawer()" title="Редактировать данные аккаунта">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 20h9"></path>
-            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        <!-- Подсвечивающаяся пульсирующая кнопка Админ Панели в шапке (появляется при входе в washy20011@gmail.com) -->
+        <button id="headerAdminPanelBtn" class="btn-admin-header" onclick="openAdminPanel()" title="Панель администратора">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
-          <span>Редактировать</span>
+          <span>Админ панель</span>
         </button>
 
-        <!-- Виджет пользователя -->
+        <!-- Виджет профиля: ТОЛЬКО иконка и выход -->
         <div id="userProfileWidget" class="user-profile-widget">
-          <div id="userAvatar" class="user-profile-avatar" onclick="toggleProfileEditDrawer()" title="Настройки аккаунта">U</div>
-          <span id="userName" class="user-profile-name" onclick="toggleProfileEditDrawer()" title="Редактировать профиль">Пользователь</span>
+          <div id="userAvatar" class="user-profile-avatar" title="Личный кабинет">U</div>
           <button class="user-logout-btn" onclick="logoutUser()" title="Выйти">✕</button>
         </div>
 
@@ -1778,60 +1696,8 @@
     </div>
   </header>
 
-  <!-- Встроенная выдвижная панель редактирования профиля (выезжает прямо под шапкой) -->
-  <div id="profileEditDrawer" class="edit-profile-drawer">
-    <div class="edit-drawer-inner">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <h3 style="font-size:1.3rem; font-weight:700;">Редактирование профиля</h3>
-        <button onclick="toggleProfileEditDrawer()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">✕</button>
-      </div>
-
-      <form id="drawerProfileForm" onsubmit="saveUserProfileChanges(event)">
-        <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px;">
-          <div id="drawerAvatarPreview" style="width:60px; height:60px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:700; overflow:hidden; flex-shrink:0;">U</div>
-          <div style="flex:1;">
-            <label style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:4px;">Ссылка на аватар (URL):</label>
-            <input type="url" id="drawerAvatarInput" class="form-input" placeholder="https://..." oninput="updateDrawerAvatarPreview()">
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div class="form-group">
-            <label>Имя:</label>
-            <input type="text" id="drawerNameInput" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label>Логин:</label>
-            <input type="text" id="drawerUsernameInput" class="form-input" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Новый пароль (оставьте пустым, если не меняете):</label>
-          <input type="password" id="drawerPasswordInput" class="form-input" placeholder="••••••••">
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div class="form-group">
-            <label>Телефон:</label>
-            <input type="tel" id="drawerPhoneInput" class="form-input" placeholder="+7 (999) 000-00-00">
-          </div>
-          <div class="form-group">
-            <label>Email:</label>
-            <input type="email" id="drawerEmailInput" class="form-input" readonly style="opacity:0.65;">
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px; margin-top:10px;">
-          <button type="submit" class="btn" style="flex:1; padding:10px;">Сохранить изменения</button>
-          <button type="button" class="btn-secondary" style="padding:10px 18px;" onclick="toggleProfileEditDrawer()">Закрыть</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <div class="mobile-nav-drawer" id="mobileDrawer">
-    <a href="javascript:void(0)" id="mobileAdminPanelBtn" onclick="openAdminPanel(); toggleMobileMenu();" style="display:none;color:var(--accent-bright);">⚙ Admin Panel</a>
+    <a href="javascript:void(0)" id="mobileAdminPanelBtn" onclick="openAdminPanel(); toggleMobileMenu();" style="display:none;color:var(--accent-bright);">⚙ Админ панель</a>
     <a href="#products" onclick="toggleMobileMenu()">Каталог товаров</a>
     <a href="#reviews" onclick="toggleMobileMenu()">Отзывы покупателей ⭐</a>
     <a href="#support" onclick="toggleMobileMenu()">Служба поддержки</a>
@@ -2085,7 +1951,6 @@
         <div class="auth-tabs">
           <button type="button" id="tabLoginBtn" class="auth-tab-btn active" onclick="switchAuthTab('login')">Вход</button>
           <button type="button" id="tabRegisterBtn" class="auth-tab-btn" onclick="switchAuthTab('register')">Регистрация</button>
-          <button type="button" id="tabAdminBtn" class="auth-tab-btn" onclick="switchAuthTab('admin')" style="display:none;">Admin</button>
         </div>
 
         <div class="oauth-options" id="oauthOptions">
@@ -2145,23 +2010,6 @@
             </button>
           </form>
         </div>
-
-        <!-- Панель входа администратора -->
-        <div id="adminLoginPanel" class="auth-panel">
-          <div class="admin-only-note">Закрытый вход владельца магазина. После авторизации появится управление товарами и промокодами.</div>
-          <form id="adminLoginForm" onsubmit="loginAsAdmin(event)">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label style="font-size: 0.85rem;">Email администратора:</label>
-              <input type="email" id="adminLoginInput" class="form-input" placeholder="washy20011@gmail.com" autocomplete="username" required>
-            </div>
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label style="font-size: 0.85rem;">Пароль:</label>
-              <input type="password" id="adminPasswordInput" class="form-input" placeholder="Введите пароль" autocomplete="current-password" required>
-            </div>
-            <button type="submit" class="btn" style="width: 100%; padding: 12px;">Войти в Admin Panel</button>
-            <div id="adminLoginStatus" class="admin-status" style="color:var(--accent-bright);"></div>
-          </form>
-        </div>
       </div>
     </div>
   </div>
@@ -2211,11 +2059,11 @@
         <div class="admin-topbar">
           <div>
             <div class="admin-kicker">Fedriko Control Center</div>
-            <h3 class="modal-title" style="font-size:1.8rem;margin-bottom:4px;">Admin Panel</h3>
+            <h3 class="modal-title" style="font-size:1.8rem;margin-bottom:4px;">Панель администратора</h3>
             <p class="admin-subtitle">Управление каталогом и промокодами магазина</p>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn-secondary" type="button" onclick="logoutAdmin()" style="padding:9px 14px;">Выйти</button>
+            <button class="btn-secondary" type="button" onclick="closeAdminPanel()" style="padding:9px 14px;">Закрыть</button>
           </div>
         </div>
 
@@ -2325,8 +2173,7 @@
       signInWithEmailAndPassword,
       signOut,
       onAuthStateChanged,
-      updateProfile,
-      updatePassword
+      updateProfile
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -2360,9 +2207,10 @@
       } else {
         window.currentFirebaseUser = null;
         document.getElementById('authLoginBtn').style.display = 'inline-flex';
-        document.getElementById('headerEditProfileBtn').classList.remove('active');
         document.getElementById('userProfileWidget').classList.remove('active');
-        document.getElementById('profileEditDrawer').classList.remove('active');
+        document.getElementById('headerAdminPanelBtn').classList.remove('active');
+        document.getElementById('mobileAdminPanelBtn').style.display = 'none';
+        closeAdminPanel();
       }
       updatePurchasesAndReviewUI();
     });
@@ -2397,15 +2245,6 @@
       const email = document.getElementById('authEmailInput').value.trim();
       const password = document.getElementById('authPasswordInput').value;
 
-      if (email.toLowerCase() === 'washy20011@gmail.com') {
-        document.getElementById('adminLoginInput').value = email;
-        document.getElementById('adminPasswordInput').value = password;
-        switchAuthTab('admin');
-        window.loginAsAdmin(event);
-        document.getElementById('emailLoginForm').reset();
-        return;
-      }
-
       try {
         await signInWithEmailAndPassword(auth, email, password);
         document.getElementById('emailLoginForm').reset();
@@ -2420,52 +2259,6 @@
         await signOut(auth);
       } catch (error) {
         console.error("Ошибка при выходе:", error);
-      }
-    };
-
-    window.saveUserProfileChanges = async function(event) {
-      event.preventDefault();
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const name = document.getElementById('drawerNameInput').value.trim();
-      const username = document.getElementById('drawerUsernameInput').value.trim();
-      const password = document.getElementById('drawerPasswordInput').value;
-      const phone = document.getElementById('drawerPhoneInput').value.trim();
-      const avatarUrl = document.getElementById('drawerAvatarInput').value.trim();
-
-      if (!name || !username) {
-        alert('Имя и логин не могут быть пустыми!');
-        return;
-      }
-
-      try {
-        await updateProfile(user, {
-          displayName: name,
-          photoURL: avatarUrl || null
-        });
-
-        if (password && password.length >= 6) {
-          await updatePassword(user, password);
-        }
-
-        localStorage.setItem('fedriko_user_extra_' + user.uid, JSON.stringify({
-          name: name,
-          username: username,
-          phone: phone,
-          avatarUrl: avatarUrl
-        }));
-
-        window.currentFirebaseUser.name = name;
-        window.currentFirebaseUser.username = username;
-        window.currentFirebaseUser.avatarUrl = avatarUrl;
-        window.currentFirebaseUser.phone = phone;
-
-        renderUserProfile(window.currentFirebaseUser);
-        toggleProfileEditDrawer();
-        alert('Данные профиля успешно обновлены!');
-      } catch (error) {
-        handleAuthError(error);
       }
     };
 
@@ -2491,8 +2284,7 @@
     let currentSelectedRating = 5;
     let appliedPromo = null;
 
-    const ADMIN_LOGIN = 'washy20011@gmail.com';
-    const ADMIN_PASSWORD_CODE = 'MXoyeDNjNFYkZmVkcnNob3Bz';
+    const ADMIN_EMAIL = 'washy20011@gmail.com';
     const PRODUCTS_STORAGE_KEY = 'fedriko_admin_products_v1';
     const PROMOS_STORAGE_KEY = 'fedriko_admin_promos_v1';
 
@@ -2532,17 +2324,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       initThemeAndGlass();
       renderProducts();
-      initAdminSession();
       loadReviews();
       updatePurchasesAndReviewUI();
-
-      if (location.hash.toLowerCase() === '#admin') {
-        if (isAdminLoggedIn()) openAdminPanel();
-        else {
-          openAuthModal();
-          switchAuthTab('admin');
-        }
-      }
     });
 
     function getProducts() {
@@ -2583,50 +2366,44 @@
       `).join('');
     }
 
-    function encodeAdminPassword(value) {
-      return btoa(unescape(encodeURIComponent(value)));
+    function isAdmin() {
+      const user = window.currentFirebaseUser;
+      return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
     }
 
-    function isAdminLoggedIn() {
-      return sessionStorage.getItem('fedriko_admin_session') === 'active';
-    }
+    function renderUserProfile(user) {
+      document.getElementById('authLoginBtn').style.display = 'none';
+      const widget = document.getElementById('userProfileWidget');
+      const avatar = document.getElementById('userAvatar');
 
-    function initAdminSession() {
-      const isAdmin = isAdminLoggedIn();
-      const adminButton = document.getElementById('adminPanelBtn');
-      adminButton.hidden = !isAdmin;
-      adminButton.classList.toggle('active', isAdmin);
-      document.getElementById('mobileAdminPanelBtn').style.display = isAdmin ? 'block' : 'none';
-    }
+      widget.classList.add('active');
 
-    function loginAsAdmin(event) {
-      event.preventDefault();
-      const login = document.getElementById('adminLoginInput').value.trim();
-      const password = document.getElementById('adminPasswordInput').value;
-      const status = document.getElementById('adminLoginStatus');
-      status.textContent = 'Проверяем доступ...';
+      if (user.avatarUrl && user.avatarUrl.trim()) {
+        avatar.innerHTML = `<img src="${user.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        avatar.innerText = (user.name || 'U').charAt(0).toUpperCase();
+      }
 
-      try {
-        const passwordCode = encodeAdminPassword(password);
-        if (login.toLowerCase() === ADMIN_LOGIN.toLowerCase() && passwordCode === ADMIN_PASSWORD_CODE) {
-          sessionStorage.setItem('fedriko_admin_session', 'active');
-          document.getElementById('adminLoginForm').reset();
-          status.textContent = '';
-          initAdminSession();
-          closeAuthModal();
-          openAdminPanel();
-        } else {
-          status.textContent = 'Неверный логин или пароль.';
-        }
-      } catch (error) {
-        status.textContent = 'Не удалось проверить пароль в этом браузере.';
+      // Проверка прав администратора для кнопки в шапке
+      const adminBtn = document.getElementById('headerAdminPanelBtn');
+      const mobileAdminBtn = document.getElementById('mobileAdminPanelBtn');
+      if (isAdmin()) {
+        adminBtn.classList.add('active');
+        mobileAdminBtn.style.display = 'block';
+      } else {
+        adminBtn.classList.remove('active');
+        mobileAdminBtn.style.display = 'none';
+      }
+
+      const checkoutContact = document.getElementById('checkoutContactInput');
+      if (checkoutContact && !checkoutContact.value && (user.contact || user.email || user.phone)) {
+        checkoutContact.value = user.contact || user.email || user.phone;
       }
     }
 
     function openAdminPanel() {
-      if (!isAdminLoggedIn()) {
-        openAuthModal();
-        switchAuthTab('admin');
+      if (!isAdmin()) {
+        alert("Доступ разрешен только владельцу washy20011@gmail.com!");
         return;
       }
       renderAdminProductsList();
@@ -2645,17 +2422,8 @@
       document.body.style.overflow = 'auto';
     }
 
-    function logoutAdmin() {
-      sessionStorage.removeItem('fedriko_admin_session');
-      closeAdminPanel();
-      initAdminSession();
-      if (location.hash.toLowerCase() === '#admin') {
-        history.replaceState(null, '', location.pathname + location.search);
-      }
-    }
-
     function switchAdminView(view) {
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const productsMode = view === 'products';
       document.getElementById('adminProductsTab').classList.toggle('active', productsMode);
       document.getElementById('adminPromosTab').classList.toggle('active', !productsMode);
@@ -2690,7 +2458,7 @@
 
     function saveAdminProduct(event) {
       event.preventDefault();
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const idInput = document.getElementById('adminProductId');
       const products = getProducts();
       const existingIndex = products.findIndex(product => product.id === idInput.value);
@@ -2731,7 +2499,7 @@
     }
 
     function editAdminProduct(id) {
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const product = getProducts().find(item => item.id === id);
       if (!product) return;
       document.getElementById('adminProductId').value = product.id;
@@ -2749,7 +2517,7 @@
     }
 
     function deleteAdminProduct(id) {
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const product = getProducts().find(item => item.id === id);
       if (!product || !confirm(`Удалить товар «${product.title}»?`)) return;
       saveProducts(getProducts().filter(item => item.id !== id));
@@ -2767,7 +2535,7 @@
     }
 
     function handleAdminImageUpload(event) {
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const file = event.target.files && event.target.files[0];
       if (!file) return;
       if (file.size > 2 * 1024 * 1024) {
@@ -2799,7 +2567,7 @@
 
     function saveAdminPromo(event) {
       event.preventDefault();
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       const code = document.getElementById('adminPromoCode').value.trim().toUpperCase();
       const discount = Number(document.getElementById('adminPromoDiscount').value);
       const days = Number(document.getElementById('adminPromoDays').value);
@@ -2858,7 +2626,7 @@
     }
 
     function deleteAdminPromo(id) {
-      if (!isAdminLoggedIn()) return;
+      if (!isAdmin()) return;
       savePromos(getPromos().filter(promo => promo.id !== id));
       renderAdminPromosList();
     }
@@ -2973,17 +2741,15 @@
     function switchAuthTab(tab) {
       const loginTab = document.getElementById('tabLoginBtn');
       const regTab = document.getElementById('tabRegisterBtn');
-      const adminTab = document.getElementById('tabAdminBtn');
       const loginPanel = document.getElementById('loginPanel');
       const regPanel = document.getElementById('registerPanel');
-      const adminPanel = document.getElementById('adminLoginPanel');
       const oauthOptions = document.getElementById('oauthOptions');
       const authDivider = document.getElementById('authDivider');
       const vkText = document.getElementById('vkBtnText');
       const yaText = document.getElementById('yaBtnText');
 
-      [loginTab, regTab, adminTab].forEach(button => button.classList.remove('active'));
-      [loginPanel, regPanel, adminPanel].forEach(panel => panel.classList.remove('active'));
+      [loginTab, regTab].forEach(button => button.classList.remove('active'));
+      [loginPanel, regPanel].forEach(panel => panel.classList.remove('active'));
 
       if (tab === 'register') {
         regTab.classList.add('active');
@@ -2992,11 +2758,6 @@
         authDivider.style.display = 'flex';
         vkText.innerText = 'Создать через VK ID';
         yaText.innerText = 'Создать через Яндекс ID';
-      } else if (tab === 'admin') {
-        adminTab.classList.add('active');
-        adminPanel.classList.add('active');
-        oauthOptions.style.display = 'none';
-        authDivider.style.display = 'none';
       } else {
         loginTab.classList.add('active');
         loginPanel.classList.add('active');
@@ -3009,61 +2770,6 @@
 
     function getLoggedInUser() {
       return window.currentFirebaseUser || null;
-    }
-
-    function renderUserProfile(user) {
-      document.getElementById('authLoginBtn').style.display = 'none';
-      document.getElementById('headerEditProfileBtn').classList.add('active');
-      const widget = document.getElementById('userProfileWidget');
-      const avatar = document.getElementById('userAvatar');
-      const name = document.getElementById('userName');
-
-      widget.classList.add('active');
-      name.innerText = user.name;
-
-      if (user.avatarUrl && user.avatarUrl.trim()) {
-        avatar.innerHTML = `<img src="${user.avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-      } else {
-        avatar.innerText = (user.name || 'U').charAt(0).toUpperCase();
-      }
-
-      const checkoutContact = document.getElementById('checkoutContactInput');
-      if (checkoutContact && !checkoutContact.value && (user.contact || user.email || user.phone)) {
-        checkoutContact.value = user.contact || user.email || user.phone;
-      }
-    }
-
-    function toggleProfileEditDrawer() {
-      const drawer = document.getElementById('profileEditDrawer');
-      const user = window.currentFirebaseUser;
-      if (!user) {
-        openAuthModal();
-        return;
-      }
-
-      drawer.classList.toggle('active');
-
-      if (drawer.classList.contains('active')) {
-        document.getElementById('drawerNameInput').value = user.name || '';
-        document.getElementById('drawerUsernameInput').value = user.username || '';
-        document.getElementById('drawerPasswordInput').value = '';
-        document.getElementById('drawerPhoneInput').value = user.phone || '';
-        document.getElementById('drawerEmailInput').value = user.email || '';
-        document.getElementById('drawerAvatarInput').value = user.avatarUrl || '';
-        updateDrawerAvatarPreview();
-      }
-    }
-
-    function updateDrawerAvatarPreview() {
-      const preview = document.getElementById('drawerAvatarPreview');
-      const url = document.getElementById('drawerAvatarInput').value.trim();
-      const name = document.getElementById('drawerNameInput').value.trim() || 'U';
-
-      if (url) {
-        preview.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerText='${name.charAt(0).toUpperCase()}';">`;
-      } else {
-        preview.innerText = name.charAt(0).toUpperCase();
-      }
     }
 
     function loginWithVK() {
