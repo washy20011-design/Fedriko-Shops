@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="application-version" content="0.20.0" />
+  <meta name="application-version" content="0.21.0" />
   <title>Fedriko Shops — Дизайн и моды для Minecraft</title>
 
   <!-- VK ID SDK -->
@@ -1163,6 +1163,109 @@
     }
     .modal-tg-hint a { color: #2AABEE; font-weight: 600; }
 
+    /* ============================================================== */
+    /* СТИЛИ ПЕРЕКЛЮЧЕНИЯ СЛОЖНОСТИ И КНОПКИ "ПОДРОБНЕЕ"               */
+    /* ============================================================== */
+    .tier-selector-block {
+      margin-bottom: 14px;
+    }
+
+    .tier-selector-label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .tier-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .btn-tier {
+      background: var(--border-subtle);
+      border: 1px solid var(--border-highlight);
+      color: var(--text-secondary);
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .btn-tier:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .btn-tier.active {
+      background: var(--accent);
+      border-color: var(--accent-bright);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-more-details {
+      background: transparent;
+      border: none;
+      color: var(--accent-bright);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      margin-bottom: 8px;
+      outline: none;
+    }
+
+    .btn-more-details:hover {
+      text-decoration: underline;
+    }
+
+    .modal-details-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease-out, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .modal-details-expand.open {
+      max-height: 340px;
+      opacity: 1;
+    }
+
+    .details-inner-card {
+      background: var(--border-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    .details-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      background: rgba(230, 46, 45, 0.12);
+      border: 1px solid rgba(230, 46, 45, 0.3);
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+    }
+
     .pay-options { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
 
     .pay-btn-item {
@@ -1752,7 +1855,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.20.0</p>
+      <p class="footer-text">© 2026 год разработана студией <span>WStable</span> · v0.21.0</p>
     </div>
   </footer>
 
@@ -1800,19 +1903,39 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО ТОВАРОВ -->
+  <!-- МОДАЛЬНОЕ ОКНО ТОВАРОВ С ВЫБОРОМ СЛОЖНОСТИ И РАСКРЫТИЕМ ПОДРОБНОСТЕЙ -->
   <div class="modal-overlay" id="itemModal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal(event)">✕</button>
       <img src="" alt="Превью товара" class="modal-image" id="modalImg">
       <div class="modal-body">
         <h3 class="modal-title" id="modalTitle">Название товара</h3>
+        
         <div class="modal-price-row">
-          <div class="modal-price" id="modalPrice">от <span>50</span> до <span>500</span> ₽</div>
+          <div class="modal-price" id="modalPrice">от <span>10</span> ₽</div>
           <button class="btn modal-buy-btn" onclick="openPaymentModal()">Купить</button>
         </div>
-        <div class="modal-desc" id="modalDesc">Описание товара.</div>
-        <div class="modal-tg-hint">
+
+        <!-- Блок выбора уровня сложности (Лёгкий / Средний / Сложный) -->
+        <div id="tierSelectorContainer" class="tier-selector-block" style="display: none;">
+          <label class="tier-selector-label">Уровень сложности:</label>
+          <div class="tier-buttons-grid" id="tierButtonsGrid"></div>
+        </div>
+
+        <!-- Кнопка «Подробнее» -->
+        <button type="button" class="btn-more-details" id="toggleDetailsBtn" onclick="toggleProductDetails()">
+          <span id="toggleDetailsText">Подробнее о тарифе ▼</span>
+        </button>
+
+        <!-- Выдвижной блок с подробным описанием -->
+        <div class="modal-details-expand" id="productDetailsBlock">
+          <div class="details-inner-card">
+            <div class="details-badge" id="detailsBadge">Тариф</div>
+            <p id="modalDesc">Подробное описание тарифа.</p>
+          </div>
+        </div>
+
+        <div class="modal-tg-hint" style="margin-top: 14px;">
           Для консультации напишите нам в <a href="https://t.me/Federiko_990" target="_blank" rel="noopener noreferrer">Telegram</a> или откройте наш чат поддержки на сайте.
         </div>
       </div>
@@ -2277,7 +2400,6 @@
 
     onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        // Проверка блокировки аккаунта в реестре
         const userRegistry = getUsersRegistry();
         const existingRecord = userRegistry.find(u => u.id === firebaseUser.uid || (u.email && u.email.toLowerCase() === firebaseUser.email?.toLowerCase()));
 
@@ -2299,9 +2421,7 @@
           contact: firebaseUser.email || localExt.phone || '@' + (localExt.username || 'user')
         };
 
-        // Синхронизация профиля в реестре пользователей
         syncUserToRegistry(window.currentFirebaseUser);
-
         renderUserProfile(window.currentFirebaseUser);
       } else {
         window.currentFirebaseUser = null;
@@ -2354,7 +2474,6 @@
       const email = document.getElementById('authEmailInput').value.trim();
       const password = document.getElementById('authPasswordInput').value;
 
-      // Проверка на блокировку перед входом
       const userRegistry = getUsersRegistry();
       const targetUser = userRegistry.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
       if (targetUser && targetUser.blocked) {
@@ -2409,42 +2528,148 @@
     let appliedPromo = null;
     let activeAdminChatUserId = null;
 
+    // Переменные для активного товара и уровня сложности
+    let currentActiveProductObj = null;
+    let currentSelectedTierIndex = 0;
+
     const ADMIN_EMAIL = 'washy20011@gmail.com';
-    const PRODUCTS_STORAGE_KEY = 'fedriko_admin_products_v1';
+    const PRODUCTS_STORAGE_KEY = 'fedriko_admin_products_v2';
     const PROMOS_STORAGE_KEY = 'fedriko_admin_promos_v1';
     const CHATS_STORAGE_KEY = 'fedriko_support_chats_realtime_v2';
     const USERS_REGISTRY_KEY = 'fedriko_users_registry_v1';
 
+    // Товары с тарифами и подробными описаниями
     const defaultProducts = [
       {
-        id: 'skins', title: 'Скины', tag: 'ПЕРСОНАЛИЗАЦИЯ', price: 'от 10 ₽', basePrice: 10,
-        image: 'https://i.postimg.cc/7Yn8Yrb0/IMG-20261020-130724-230.jpg', beta: false,
-        summary: 'Разработка уникального образа для вашего персонажа. Детализация и стиль зависят от ваших пожеланий.',
-        description: 'Отрисовка уникального образа для вашего персонажа с нуля по вашему описанию или референсам. Создаю как простые скины, так и сложные детализированные образы (HD).'
+        id: 'skins',
+        title: 'Скины на заказ',
+        tag: 'ПЕРСОНАЛИЗАЦИЯ',
+        price: 'от 10 до 100 ₽',
+        basePrice: 10,
+        image: 'https://i.postimg.cc/7Yn8Yrb0/IMG-20261020-130724-230.jpg',
+        beta: false,
+        summary: 'Отрисовка уникального образа для вашего персонажа под любые пожелания.',
+        description: 'Создание скинов любой сложности под ваши требования.',
+        tiers: [
+          {
+            name: 'Лёгкий',
+            priceLabel: 'от 10 до 25 ₽',
+            basePrice: 10,
+            desc: 'Создание стандартного скина или аккуратное изменение вашего готового скина (перекраска одежды, замена причёски, добавление простых аксессуаров без 3D-слоёв).'
+          },
+          {
+            name: 'Средний',
+            priceLabel: 'от 26 до 50 ₽',
+            basePrice: 26,
+            desc: 'Качественно обработанный скин с проработанными тенями, гармоничной палитрой и объёмным вторым слоем (куртки, капюшоны, объёмные волосы).'
+          },
+          {
+            name: 'Сложный',
+            priceLabel: 'от 50 до 100 ₽',
+            basePrice: 50,
+            desc: 'Полностью объёмный высокодетализированный скин уровня Pro. Индивидуальный дизайн с нуля по артам, сложная работа со вторым слоем, эффектные складки и мелкие детали.'
+          }
+        ]
       },
       {
-        id: 'packs', title: 'Ресурс-паки', tag: 'ОКРУЖЕНИЕ', price: 'от 50 до 500 ₽', basePrice: 50,
-        image: 'https://i.postimg.cc/5tVTvPGR/5384117513202899850-121.jpg', beta: false,
-        summary: 'Замена стандартных текстур блоков, предметов и интерфейса. Полное преображение визуального восприятия игры.',
-        description: 'Создание индивидуального ресурс-пака. Возможна замена текстур блоков, интерфейса, брони, оружия и неба. Идеально подходит для личного использования или для целого сервера. Финальная цена зависит от объема работ.'
+        id: 'packs',
+        title: 'Ресурс-паки',
+        tag: 'ОКРУЖЕНИЕ',
+        price: 'от 50 до 500 ₽',
+        basePrice: 50,
+        image: 'https://i.postimg.cc/5tVTvPGR/5384117513202899850-121.jpg',
+        beta: false,
+        summary: 'Замена стандартных текстур блоков, предметов и интерфейса.',
+        description: 'Преображение визуального восприятия игры.',
+        tiers: [
+          {
+            name: 'Лёгкий',
+            priceLabel: 'от 50 до 150 ₽',
+            basePrice: 50,
+            desc: 'Редактирование уже существующего ресурс-пака: замена мечей, прицела, частиц ударов, сердечек или полоски опыта под ваш вкус.'
+          },
+          {
+            name: 'Средний',
+            priceLabel: 'от 151 до 300 ₽',
+            basePrice: 151,
+            desc: 'Создание лёгкого ресурс-пака в разрешении 8x8 или 16x16. Идеально для PvP/Bedwars с оптимизацией для высокого FPS: короткие мечи, чистое небо и чёткая руда.'
+          },
+          {
+            name: 'Сложный',
+            priceLabel: 'от 301 до 500 ₽',
+            basePrice: 301,
+            desc: 'Высококачественный пак с разрешениями 32x32, 64x64 или 128x128. Глубокая перерисовка блоков, брони, неба, звуков и кастомных моделей предметов.'
+          }
+        ]
       },
       {
-        id: 'clients', title: 'Сборки Lunar/Badlion', tag: 'ОПТИМИЗАЦИЯ', price: 'от 10 до 100 ₽', basePrice: 10,
-        image: 'https://i.postimg.cc/Jz81hhps/5384117513202899847-121.jpg', beta: false,
-        summary: 'Настройка и оптимизация PvP-клиентов (Lunar Client, Badlion Client) под ваши нужды для максимального FPS.',
-        description: 'Индивидуальная настройка популярных PvP-клиентов. Помогу выжать максимум FPS, настрою моды под Bedwars/Skywars, подберу лучшие настройки графики и управления.'
+        id: 'clients',
+        title: 'Сборки Lunar/Badlion',
+        tag: 'ОПТИМИЗАЦИЯ',
+        price: '10 ₽',
+        basePrice: 10,
+        image: 'https://i.postimg.cc/Jz81hhps/5384117513202899847-121.jpg',
+        beta: false,
+        summary: 'Настройка и оптимизация PvP-клиентов под ваши нужды для максимального FPS.',
+        description: 'Индивидуальная настройка популярных PvP-клиентов.',
+        tiers: [
+          {
+            name: 'Стандарт',
+            priceLabel: '10 ₽',
+            basePrice: 10,
+            desc: 'Полная оптимизация конфигурации клиента под характеристики вашего ПК. Настройка модов (Keystrokes, CPS, Armor Status), раскладки интерфейса и графики для плавного PvP.'
+          }
+        ]
       },
       {
-        id: 'avatars', title: 'Создание аватарок', tag: 'ГРАФИКА И БРЕНД', price: 'от 30 до 300 ₽', basePrice: 30,
-        image: 'https://i.postimg.cc/TY358YBS/IMG-20261020-165115-887.jpg', beta: false,
-        summary: 'Стильные аватарки с вашим 3D-скином, эффектным освещением, фоном и эффектами для соцсетей, YouTube и Discord.',
-        description: 'Индивидуальная 3D-аватарка с вашим Minecraft-скином! Профессиональный рендер позы, объемный свет, добавление предметов, мечей, частиц, текста и уникального фона.'
+        id: 'avatars',
+        title: 'Создание аватарок',
+        tag: 'ГРАФИКА И БРЕНД',
+        price: 'от 10 до 30 ₽',
+        basePrice: 10,
+        image: 'https://i.postimg.cc/TY358YBS/IMG-20261020-165115-887.jpg',
+        beta: false,
+        summary: 'Стильные аватарки с вашим 3D-скином, освещением и эффектами.',
+        description: 'Индивидуальная 3D-аватарка с вашим Minecraft-скином.',
+        tiers: [
+          {
+            name: 'Стандарт',
+            priceLabel: 'от 10 до 30 ₽',
+            basePrice: 10,
+            desc: '3D-рендер персонажа с вашим скином, выбор динамичной позы, добавление предметов в руку (меч, золотое яблоко), неоновые эффекты, фон и стильная цветокоррекция.'
+          }
+        ]
       },
       {
-        id: 'mods', title: 'Разработка модов', tag: 'РАЗРАБОТКА', price: 'от 150 до 1000+ ₽', basePrice: 150,
-        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop', beta: true,
-        summary: 'Создание кастомных модификаций для серверов или личного использования. Пока в тестовом режиме.',
-        description: 'Пишу кастомные модификации для Minecraft на Java. От простых полезных утилит до новых предметов и механик. Услуга находится в стадии тестирования (BETA).'
+        id: 'mods',
+        title: 'Разработка модов',
+        tag: 'РАЗРАБОТКА',
+        price: 'от 100 до 1000+ ₽',
+        basePrice: 100,
+        image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop',
+        beta: true,
+        summary: 'Создание кастомных модификаций для серверов или личного использования.',
+        description: 'Пишу кастомные модификации для Minecraft на Java.',
+        tiers: [
+          {
+            name: 'Лёгкий',
+            priceLabel: 'от 100 до 300 ₽',
+            basePrice: 100,
+            desc: 'Простые модификации для PvP или визуального окружения: кастомный прицел, индикаторы брони, таймеры зелий или мелкие удобные утилиты.'
+          },
+          {
+            name: 'Средний',
+            priceLabel: 'от 301 до 500 ₽',
+            basePrice: 301,
+            desc: 'Небольшие геймплейные моды: добавление новых видов оружия, инструментов, простых мобов со своими характеристиками или базовых крафтов.'
+          },
+          {
+            name: 'Сложный',
+            priceLabel: 'от 501 до 1000+ ₽',
+            basePrice: 501,
+            desc: 'Очень сложные модификации: уникальные механики, сложная магия, генерация собственных структур/данжей, комплексные сетевые пакеты для серверов.'
+          }
+        ]
       }
     ];
 
@@ -2578,7 +2803,6 @@
       document.getElementById('editUserEmail').value = user.email || '';
       document.getElementById('editUserBlocked').value = user.blocked ? 'true' : 'false';
 
-      // Заполнение списка товаров для персональной скидки
       const prodSelect = document.getElementById('editDiscountProductId');
       const products = getProducts();
       prodSelect.innerHTML = '<option value="all">🔥 На ВСЕ товары</option>' +
@@ -3204,7 +3428,6 @@
 
       let effectivePercent = 0;
 
-      // 1. Проверяем персональную скидку пользователя
       const user = window.currentFirebaseUser;
       if (user) {
         const users = getUsersRegistry();
@@ -3220,7 +3443,6 @@
         }
       }
 
-      // 2. Проверяем промокод (если промокод больше персональной скидки, берем его)
       if (appliedPromo && appliedPromo.discount > effectivePercent) {
         effectivePercent = appliedPromo.discount;
       }
@@ -3529,23 +3751,85 @@
       appliedPromo = null;
     }
 
+    /* ============================================================== */
+    /* ЛОГИКА ТАРИФОВ И КНОПКИ "ПОДРОБНЕЕ" В КАРТОЧКЕ ТОВАРА          */
+    /* ============================================================== */
     function populateModalData(type) {
-      const title = document.getElementById('modalTitle');
-      const price = document.getElementById('modalPrice');
-      const img = document.getElementById('modalImg');
-      const desc = document.getElementById('modalDesc');
       const product = getProducts().find(item => item.id === type);
       if (!product) return;
 
-      title.innerText = product.title + (product.beta ? ' (BETA)' : '');
-      price.innerText = product.price;
+      currentActiveProductObj = product;
+      currentSelectedTierIndex = 0;
+
+      document.getElementById('modalTitle').innerText = product.title + (product.beta ? ' (BETA)' : '');
+      const img = document.getElementById('modalImg');
       img.src = product.image || '';
       img.style.display = product.image ? 'block' : 'none';
-      desc.innerText = product.description;
 
-      currentItemTitleText = product.title;
-      currentItemPriceText = product.price;
-      currentItemBasePrice = Number(product.basePrice) || Number((product.price.match(/\d+/) || ['0'])[0]);
+      const tierContainer = document.getElementById('tierSelectorContainer');
+      const tierGrid = document.getElementById('tierButtonsGrid');
+
+      // Если у товара несколько тарифов, отображаем кнопки
+      if (product.tiers && product.tiers.length > 1) {
+        tierContainer.style.display = 'block';
+        tierGrid.innerHTML = product.tiers.map((tier, idx) => `
+          <button type="button" class="btn-tier ${idx === 0 ? 'active' : ''}" onclick="selectProductTier(${idx})">
+            ${escapeHtml(tier.name)}
+          </button>
+        `).join('');
+      } else {
+        tierContainer.style.display = 'none';
+        tierGrid.innerHTML = '';
+      }
+
+      // Выбираем первый тариф
+      selectProductTier(0);
+
+      // Закрываем блок "Подробнее" при открытии нового окна
+      const detailsBlock = document.getElementById('productDetailsBlock');
+      detailsBlock.classList.remove('open');
+      document.getElementById('toggleDetailsText').innerText = 'Подробнее о тарифе ▼';
+    }
+
+    function selectProductTier(index) {
+      currentSelectedTierIndex = index;
+      const product = currentActiveProductObj;
+      if (!product) return;
+
+      let tierName = 'Стандарт';
+      let priceLabel = product.price;
+      let basePrice = product.basePrice || 10;
+      let description = product.description;
+
+      if (product.tiers && product.tiers[index]) {
+        const tier = product.tiers[index];
+        tierName = tier.name;
+        priceLabel = tier.priceLabel;
+        basePrice = tier.basePrice;
+        description = tier.desc;
+
+        const buttons = document.querySelectorAll('.btn-tier');
+        buttons.forEach((btn, idx) => {
+          btn.classList.toggle('active', idx === index);
+        });
+      }
+
+      document.getElementById('modalPrice').innerText = priceLabel;
+      currentItemPriceText = priceLabel;
+      currentItemBasePrice = Number(basePrice) || 10;
+      currentItemTitleText = (product.tiers && product.tiers.length > 1) 
+        ? `${product.title} (${tierName})` 
+        : product.title;
+
+      document.getElementById('detailsBadge').innerText = `${tierName} уровень`;
+      document.getElementById('modalDesc').innerText = description;
+    }
+
+    function toggleProductDetails() {
+      const block = document.getElementById('productDetailsBlock');
+      const text = document.getElementById('toggleDetailsText');
+      const isOpen = block.classList.toggle('open');
+      text.innerText = isOpen ? 'Скрыть подробности ▲' : 'Подробнее о тарифе ▼';
     }
 
     function setRating(rating) {
